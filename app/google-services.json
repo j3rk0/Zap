@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "176287992874",
+    "firebase_url": "https://musica-b840f.firebaseio.com",
+    "project_id": "musica-b840f",
+    "storage_bucket": "musica-b840f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:176287992874:android:fdff568e3580808d",
+        "android_client_info": {
+          "package_name": "com.example.ricca.zap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "176287992874-k71284f75c3klf9j0ht4buf6hedndb8h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWNvfEA1ycHXPdfa9pWoeQ1meJc0nUxK8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "176287992874-k71284f75c3klf9j0ht4buf6hedndb8h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
