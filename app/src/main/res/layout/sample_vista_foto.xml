@@ -13,8 +13,9 @@
 
     <ImageView
         android:id="@+id/immagine"
-        android:layout_width="315dp"
+        android:layout_width="match_parent"
         android:layout_height="170dp"
+        android:scaleType="centerInside"
         app:srcCompat="@color/common_google_signin_btn_text_dark_default" />
 
     <TextView

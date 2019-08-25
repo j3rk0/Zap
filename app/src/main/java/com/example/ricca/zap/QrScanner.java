@@ -5,6 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
@@ -16,6 +18,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -70,11 +73,6 @@ public class QrScanner extends AppCompatActivity {
     private DataSnapshot ds=null;
     private boolean found=false;
 
-
-    private void alertFound(String name,String link,String pic)
-    {
-
-    }
 
     private void query()
     {
@@ -132,10 +130,11 @@ public class QrScanner extends AppCompatActivity {
 
                             found = true;
 
-
-                            DialogPlus dialog=DialogPlus.newDialog(activity)
-                                    .setGravity(Gravity.TOP)
-                                    .setContentHolder(new ViewHolder(R.layout.raw_element))
+                            ViewHolder VH=new ViewHolder(R.layout.raw_element);
+                            VH.setBackgroundResource(Color.TRANSPARENT);
+                            final DialogPlus dialog=DialogPlus.newDialog(activity)
+                                    .setGravity(Gravity.CENTER)
+                                    .setContentHolder(VH)
                                     .setCancelable(true)
                                     .setOnDismissListener(new OnDismissListener() {
                                         @Override
@@ -147,23 +146,29 @@ public class QrScanner extends AppCompatActivity {
                                         public void onBackPressed(DialogPlus dialogPlus) {
                                             found=false;
                                         }
-                                    }).setOnClickListener(new OnClickListener() {
+                                    }).setContentBackgroundResource(Color.TRANSPARENT)
+                                    .setOverlayBackgroundResource(Color.TRANSPARENT)
+                                    .create();
+
+                                    VH.getInflatedView().findViewById(R.id.copertina).setOnClickListener(new View.OnClickListener() {
                                         @Override
-                                        public void onClick(DialogPlus dialog, View view) {
+                                        public void onClick(View view) {
                                             final View miniatura=findViewById(R.id.copertina);
                                             final View titolo=findViewById(R.id.element_name);
-                                            final View header=findViewById(R.id.dialog);
                                             ActivityOptionsCompat transition=ActivityOptionsCompat.makeSceneTransitionAnimation
-                                                    (activity, Pair.create(miniatura,"miniatura"),Pair.create(titolo,"titolo"),Pair.create(header,"header"));
+                                                    (activity, Pair.create(miniatura,"miniatura"),Pair.create(titolo,"titolo"));
 
                                             Intent start=new Intent(QrScanner.this,ArtWorkActivity.class);
                                             start.putExtra(EXTRA_MESSAGE,barcodes.get(0).getRawValue());
+                                            //fotoapparat.stop();
+                                            ViewGroup vg=(ViewGroup) (findViewById(R.id.camera));
+                                            vg.removeView(findViewById(R.id.camera));
+
+
                                             startActivity(start,transition.toBundle());
                                             dialog.dismiss();
                                         }
-                                    })
-                                    .create();
-
+                                    });
 
                             View V=dialog.getHolderView();
 

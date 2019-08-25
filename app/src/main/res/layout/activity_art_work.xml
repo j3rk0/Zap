@@ -11,8 +11,7 @@
         android:id="@+id/artwork_header"
         android:layout_width="match_parent"
         android:layout_height="199dp"
-        android:background="#03DAC6"
-        android:transitionName="header">
+        android:background="#03DAC6">
 
         <ImageButton
             android:id="@+id/back_artwork"
