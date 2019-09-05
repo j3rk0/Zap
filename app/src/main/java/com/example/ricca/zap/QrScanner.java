@@ -7,12 +7,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
-
-
-import androidx.renderscript.RenderScript;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -20,13 +14,15 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.util.Pair;
+import androidx.renderscript.RenderScript;
 
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.TFMobile.Classifier;
@@ -36,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.OnBackPressListener;
 import com.orhanobut.dialogplus.OnDismissListener;
@@ -48,6 +45,7 @@ import java.util.List;
 import java.util.Objects;
 
 import io.fotoapparat.Fotoapparat;
+import io.fotoapparat.parameter.Flash;
 import io.fotoapparat.parameter.ScaleType;
 import io.fotoapparat.preview.Frame;
 import io.fotoapparat.preview.FrameProcessor;
@@ -70,61 +68,55 @@ public class QrScanner extends AppCompatActivity {
 
     private void showDialog(final String ref)
     {
+        Log.v("Found artwork",ref);
         isFounded=true;
-        ViewHolder VH=new ViewHolder(R.layout.raw_element);
-        VH.setBackgroundResource(Color.TRANSPARENT);
-        final DialogPlus dialog=DialogPlus.newDialog(activity)
+
+        ViewHolder holder=new ViewHolder(R.layout.raw_element);
+        final DialogPlus dialog= DialogPlus.newDialog(context)
                 .setGravity(Gravity.CENTER)
-                .setContentHolder(VH)
                 .setCancelable(true)
+                .setContentHolder(holder)
+                .setContentBackgroundResource(Color.TRANSPARENT)
+                .setOverlayBackgroundResource(Color.TRANSPARENT)
                 .setOnDismissListener(new OnDismissListener() {
                     @Override
                     public void onDismiss(DialogPlus dialog) {
                         isFounded=false;
                     }
-                }).setOnBackPressListener(new OnBackPressListener() {
+                })
+                .setOnBackPressListener(new OnBackPressListener() {
                     @Override
                     public void onBackPressed(DialogPlus dialogPlus) {
                         isFounded=false;
                     }
-                }).setContentBackgroundResource(Color.TRANSPARENT)
-                .setOverlayBackgroundResource(Color.TRANSPARENT)
+                })
                 .create();
+        final CircularImageView copertina= holder.getInflatedView().findViewById(R.id.copertina);
+        final TextView titolo=holder.getInflatedView().findViewById(R.id.element_name);
 
-        VH.getInflatedView().findViewById(R.id.copertina).setOnClickListener(new View.OnClickListener() {
+
+        copertina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final View miniatura=findViewById(R.id.copertina);
-                final View titolo=findViewById(R.id.element_name);
-                ActivityOptionsCompat transition=ActivityOptionsCompat.makeSceneTransitionAnimation
-                        (activity, Pair.create(miniatura,"miniatura"),Pair.create(titolo,"titolo"));
+                ActivityOptionsCompat transition= ActivityOptionsCompat.makeSceneTransitionAnimation(context,
+                Pair.create((View)copertina,"miniatura"),
+                Pair.create((View)titolo,"titolo"));
 
                 Intent start=new Intent(QrScanner.this,ArtWorkActivity.class);
                 start.putExtra(EXTRA_MESSAGE,ref);
-                ViewGroup vg=(ViewGroup) (findViewById(R.id.camera));
-                vg.removeView(findViewById(R.id.camera));
-
-
                 startActivity(start,transition.toBundle());
-                dialog.dismiss();
             }
         });
 
-        View V=dialog.getHolderView();
-
-
-        TextView t=V.findViewById(R.id.element_name);
-        ImageView i=V.findViewById(R.id.copertina);
-        try {
-            t.setText(ds.child(ref+"/nome").getValue(String.class));
-            Glide.with(activity).load(ds.child(ref+"/miniatura").getValue(String.class)).into(i);
-            i.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        }catch (NullPointerException e)
-        {
-            t.setText("Error!");
-        }
-
-        dialog.show();
+        context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                titolo.setText(ds.child(ref+"/nome").getValue(String.class));
+                Glide.with(context).load(ds.child(ref+"/miniatura").getValue(String.class)).into(copertina);
+                copertina.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                dialog.show();
+            }
+        });
     }
 
 
@@ -187,16 +179,14 @@ public class QrScanner extends AppCompatActivity {
                             //analizzo il frame
                             results = classifier.recognizeImage(Nv21Image.nv21ToBitmap(rs, frame.getImage(), frame.getSize().width, frame.getSize().height));
 
-                            if( results!=null && results.size()>0 &&
-                                    results.get(0).getConfidence()>0.8 &&
-                                    ds.hasChild(Objects.requireNonNull(results.get(0).getTitle()))
+                            if( //se il risultato:
+                                    results!=null && //non è null
+                                    results.size()>0 && // ha almeno una voce
+                                    results.get(0).getConfidence()>0.8 && // la precisione è sopra l'80%
+                                    ds.hasChild(Objects.requireNonNull(results.get(0).getTitle())) //esiste nel db
                             )
-                                context.runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        showDialog(results.get(0).getTitle());
-                                    }
-                                });
+                            showDialog(results.get(0).getTitle());//mostra il dialog
+
                         }
                     }
                 })
