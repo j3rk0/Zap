@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -45,7 +44,6 @@ import java.util.List;
 import java.util.Objects;
 
 import io.fotoapparat.Fotoapparat;
-import io.fotoapparat.parameter.Flash;
 import io.fotoapparat.parameter.ScaleType;
 import io.fotoapparat.preview.Frame;
 import io.fotoapparat.preview.FrameProcessor;
@@ -62,7 +60,6 @@ public class QrScanner extends AppCompatActivity {
     private final Activity context=this;
     private Classifier classifier=null;
     private List<Classifier.Recognition> results;
-    private Activity activity=this;
     private boolean isFounded=false;
     private DataSnapshot ds=null;
 
@@ -158,7 +155,7 @@ public class QrScanner extends AppCompatActivity {
                     224,224,128,128f,
                     "input","final_result");
         } catch (IOException e) {
-            Log.e("Main Activity",e.getMessage());
+            Log.e("Main Activity", Objects.requireNonNull(e.getMessage()));
         }
 
         /////////////////////////////////////////////FOTOCAMERA

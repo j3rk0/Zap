@@ -6,24 +6,20 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
@@ -37,6 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Vector;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -85,6 +82,13 @@ public class ArtWorkActivity extends AppCompatActivity
     private CircularImageView miniatura=null;
 
     //////////////////////////////////////////////////////////////////////////////////////////
+    private String nome;
+    private String link_miniatura;
+    ListaElementi cronologia = new ListaElementi(this,"cronologia.txt");
+    ListaElementi preferiti = new ListaElementi(this,"preferiti.txt");
+
+
+    //////////////////////////////////////////////////////////////////////////////////////////
     public void fillWall(final String opera) {
         loading = ProgressDialog.show(ArtWorkActivity.this, "",
                 "Loading Content, Please Wait", true);
@@ -93,7 +97,7 @@ public class ArtWorkActivity extends AppCompatActivity
                         (
                                 new ValueEventListener() {
                                     @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
                                         Vector contenuti = new Vector();
@@ -101,18 +105,19 @@ public class ArtWorkActivity extends AppCompatActivity
                                         Contenuto temp;
                                         TextView temptext;
                                         View tempview;
-                                        int nContenuti = (int) dataSnapshot.getChildrenCount();
 
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                                            if(ds.getKey().equals("nome"))
+                                            if(Objects.equals(ds.getKey(), "nome"))
                                             {
                                                TextView t=findViewById(R.id.artwork_title);
                                                t.setText(ds.getValue(String.class));
+                                               nome=ds.getValue(String.class);
                                             }
-                                            else if(ds.getKey().equals("miniatura"))
+                                            else if(Objects.equals(ds.getKey(), "miniatura"))
                                             {
                                                 Glide.with(context).load(ds.getValue(String.class)).into(miniatura);
+                                                link_miniatura=ds.getValue(String.class);
                                             }
                                             else
                                             {
@@ -152,13 +157,13 @@ public class ArtWorkActivity extends AppCompatActivity
                                                     break;
                                             }
                                         }
-                                        contenuti = null;
 
                                         loading.dismiss();
+                                        cronologia.add(nome,opera,link_miniatura);
                                     }
 
                                     @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
                                     }
                                 }
                         );
@@ -302,16 +307,39 @@ public class ArtWorkActivity extends AppCompatActivity
 
         riferimentoS = FirebaseStorage.getInstance();         //inizializza riferimenti
         riferimentoDB = FirebaseDatabase.getInstance();
-        wall = (LinearLayout) findViewById(R.id.bacheca);
-        title=(TextView)findViewById(R.id.artwork_title);
+        wall = findViewById(R.id.bacheca);
+        title= findViewById(R.id.artwork_title);
         miniatura=findViewById(R.id.miniatura);
 
         Intent intent = getIntent();
-        String opera = intent.getStringExtra(EXTRA_MESSAGE); //prende in input la stringa riferimento dell'opera
+        final String opera = intent.getStringExtra(EXTRA_MESSAGE); //prende in input la stringa riferimento dell'opera
 
         fillWall(opera);      //crea pagina
 
 
+        //SETTA IMAGINE BOTTONE PREFERITI
+        if(preferiti.isPresent(opera))
+        {
+            //TODO
+            //setta icona premuta
+        }else{
+            //TODO
+            //setta icona non premuta
+        }
+
+
+
+        (findViewById(R.id.bookmark_artwork)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //cosa accade quando premi il bottone
+
+                if(preferiti.isPresent(opera))
+                    preferiti.remove(opera);
+                else
+                    preferiti.add(nome,opera,link_miniatura);
+            }
+        });
     }
 
 }

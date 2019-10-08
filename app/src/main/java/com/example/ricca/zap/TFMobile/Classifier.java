@@ -19,6 +19,8 @@ package com.example.ricca.zap.TFMobile;
 import android.graphics.Bitmap;
 import android.graphics.RectF;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
 /**
@@ -28,7 +30,7 @@ public interface Classifier {
     /**
      * An immutable result returned by a Classifier describing what was recognized.
      */
-    public class Recognition {
+    class Recognition {
         /**
          * A unique identifier for what has been recognized. Specific to the class, not the instance of
          * the object.
@@ -50,7 +52,7 @@ public interface Classifier {
          */
         private RectF location;
 
-        public Recognition(
+        Recognition(
                 final String id, final String title, final Float confidence, final RectF location) {
             this.id = id;
             this.title = title;
@@ -78,6 +80,7 @@ public interface Classifier {
             this.location = location;
         }
 
+        @NonNull
         @Override
         public String toString() {
             String resultString = "";
