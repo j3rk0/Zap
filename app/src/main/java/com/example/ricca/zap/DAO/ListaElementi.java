@@ -33,7 +33,7 @@ public class ListaElementi {
                 fis = context.openFileInput(file);
                 InputStreamReader isr = new InputStreamReader(fis);
                 BufferedReader br = new BufferedReader(isr);
-                String nome, collegamento, miniatura;
+                String nome, collegamento, miniatura = "";
                 String line;
                 String[] campo;
 
@@ -50,6 +50,8 @@ public class ListaElementi {
                     }
                 }
 
+        } catch(FileNotFoundException e){
+            e.printStackTrace();
         } catch(IOException e){
             e.printStackTrace();
         } finally{
@@ -84,6 +86,8 @@ public class ListaElementi {
             }
             fos.write(temp.getBytes());
 
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

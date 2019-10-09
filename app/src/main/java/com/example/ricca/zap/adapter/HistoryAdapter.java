@@ -13,16 +13,26 @@ import com.bumptech.glide.Glide;
 import com.example.ricca.zap.DAO.Elemento;
 import com.example.ricca.zap.DAO.ListaElementi;
 import com.example.ricca.zap.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class HistoryAdapter extends BaseAdapter {
 
-    private ListaElementi list;
-    private Context context;
+    public ListaElementi getList() {
+        return list;
+    }
+
+    private ListaElementi list = null;
+    private Context context = null;
+    private FirebaseDatabase riferimento = null;
+    private DataSnapshot ds = null;
+    private String prova = "";
 
     public HistoryAdapter(Context context)
     {
         this.context=context;
         this.list = new ListaElementi(context,"cronologia.txt");
+        this.riferimento = FirebaseDatabase.getInstance();
 
     }
 
@@ -51,17 +61,17 @@ public class HistoryAdapter extends BaseAdapter {
 
         Elemento temp = (Elemento) getItem(i);
 
-        TextView txt= view.findViewById(R.id.nome);
-        TextView txt2= view.findViewById(R.id.desc);
-        ImageView imageView = view.findViewById(R.id.copertina);
-        ImageButton remove = view.findViewById(R.id.remove_button);
+        TextView txt=(TextView) view.findViewById(R.id.nome);
+        TextView txt2=(TextView) view.findViewById(R.id.desc);
+        ImageView imageView = (ImageView) view.findViewById(R.id.copertina);
+        ImageButton remove = (ImageButton) view.findViewById(R.id.remove_button);
 
         txt.setText(temp.getNome());
         txt2.setText(temp.getCollegamento());
         Glide.with(this.context).load(temp.getMiniatura()).into(imageView);
         remove.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //list.remove();
+                //list.removeFile();
             }
         });
 

@@ -11,13 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.ricca.zap.DAO.Elemento;
 import com.example.ricca.zap.DAO.ListaElementi;
 import com.example.ricca.zap.QrScanner;
 import com.example.ricca.zap.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
-
-import java.util.Objects;
-
 public
 class Home extends Fragment {
 
@@ -42,7 +40,7 @@ class Home extends Fragment {
 
        (mini).setOnClickListener(new View.OnClickListener() {
            @Override
-           public void onClick(View view) {startActivity(new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), QrScanner.class));
+           public void onClick(View view) {startActivity(new Intent(getActivity().getApplicationContext(), QrScanner.class));
            }
        });
        ListaElementi lista=new ListaElementi(myFragmentView.getContext(),"cronologia.txt");
