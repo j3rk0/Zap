@@ -1,5 +1,6 @@
 package com.example.ricca.zap.adapter;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -10,18 +11,17 @@ import com.example.ricca.zap.fragment.Home;
 
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
-    private static int NUM_ITEMS = 3;
-
     public MyPagerAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
 
     @Override
     public int getCount() {
-        return NUM_ITEMS;
+        return 3;
     }
     // Returns the fragment to display for a particular page.
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         switch (position) {
