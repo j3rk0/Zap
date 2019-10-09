@@ -1,4 +1,4 @@
-package com.example.ricca.zap;
+package com.example.ricca.zap.DAO;
 
 import android.content.Context;
 import android.widget.Toast;
@@ -14,80 +14,44 @@ import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Elemento {
-    private String Nome;
-    private String Collegamento;
-
-    String getMiniatura() {
-        return Miniatura;
-    }
-
-    public void setMiniatura(String miniatura) {
-        Miniatura = miniatura;
-    }
-
-    private String Miniatura;
-
-    Elemento(String nome, String collegamento, String miniatura) {
-        Nome = nome;
-        Collegamento = collegamento;
-        Miniatura = miniatura;
-    }
-
-    String getNome() {
-        return Nome;
-    }
-
-    public void setNome(String nome) {
-        Nome = nome;
-    }
-
-    String getCollegamento() {
-        return Collegamento;
-    }
-
-    public void setCollegamento(String collegamento) {
-        Collegamento = collegamento;
-    }
-}
-
-class ListaElementi {
+public class ListaElementi {
 
     private ArrayList<Elemento> listaelementi;
     private String file;
     private Context context;
 
 
-    ListaElementi(Context context, String file) {
+    public ListaElementi(Context context, String file) {
         this.context = context;
         listaelementi=new ArrayList<>();
         this.file=file;
 
         FileInputStream fis = null;
 
-
-
         try {
-            File curr=new File(file);
-            if(!curr.exists())curr.createNewFile();
-            fis = context.openFileInput(file);
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-            String nome, collegamento, miniatura="";
-            String line;
-            String[] campo;
 
-            while ((line = br.readLine()) != null) {
-                if (line.contains("@")) {
-                    campo = line.split("@");
-                    nome = campo[0];
-                    collegamento = campo[1];
-                    miniatura = campo[2];
-                    //spezzetti line
+                fis = context.openFileInput(file);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader br = new BufferedReader(isr);
+                String nome, collegamento, miniatura = "";
+                String line;
+                String[] campo;
 
-                    listaelementi.add(new Elemento(nome, collegamento, miniatura));
+                while ((line = br.readLine()) != null) {
+                    if (line.contains("@")) {
+                        campo = line.split("@");
+                        nome = campo[0];
+                        collegamento = campo[1];
+                        miniatura = campo[2];
+                        //spezzetti line
+
+                        listaelementi.add(new Elemento(nome, collegamento, miniatura));
+
+                    }
                 }
-            }
+
+        } catch(FileNotFoundException e){
+            e.printStackTrace();
         } catch(IOException e){
             e.printStackTrace();
         } finally{
@@ -101,7 +65,7 @@ class ListaElementi {
         }
     }
 
-    boolean isPresent(String collegamento)    {
+    public boolean isPresent(String collegamento)    {
         for(Elemento e:listaelementi)
             if(e.getCollegamento().equals(collegamento)) return true;
         return false;
@@ -138,7 +102,7 @@ class ListaElementi {
 
     }
 
-    void add(String nome, String collegamento, String miniatura) {
+    public void add(String nome, String collegamento, String miniatura) {
         for(Elemento A:listaelementi){
             if (A.getCollegamento().equals(collegamento))
                 return;
@@ -149,7 +113,7 @@ class ListaElementi {
             Toast.makeText(context,"Aggiunto "+nome+" ai preferiti",Toast.LENGTH_SHORT).show();
     }
 
-    void remove(String collegamento) {
+    public void remove(String collegamento) {
         int i=0;
         while(i<listaelementi.size())
             if(listaelementi.get(i).getCollegamento().equals(collegamento))
@@ -163,12 +127,11 @@ class ListaElementi {
             Toast.makeText(context,"Elemento rimosso dai preferiti",Toast.LENGTH_SHORT).show();
     }
 
-    Elemento get(int i) {
+    public  Elemento get(int i) {
         return listaelementi.get(i);
     }
 
-    int size() {
+    public int size() {
         return listaelementi.size();
     }
-
 }

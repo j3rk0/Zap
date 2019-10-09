@@ -22,6 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.ricca.zap.DAO.Contenuto;
+import com.example.ricca.zap.DAO.ListaElementi;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,38 +40,6 @@ import java.util.Vector;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-class Contenuto
-{
-    private String tipo;
-    private String titolo;
-    private String valore;
-
-
-    void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    void setTitolo(String titolo) {
-        this.titolo = titolo;
-    }
-
-    void setValore(String valore) {
-        this.valore = valore;
-    }
-
-    String getTipo() {
-        return tipo;
-    }
-
-    String getTitolo() {
-        return titolo;
-    }
-
-    String getValore() {
-        return valore;
-    }
-}
-
 
 public class ArtWorkActivity extends AppCompatActivity
 {
@@ -84,8 +54,8 @@ public class ArtWorkActivity extends AppCompatActivity
     //////////////////////////////////////////////////////////////////////////////////////////
     private String nome;
     private String link_miniatura;
-    ListaElementi cronologia = new ListaElementi(this,"cronologia.txt");
-    ListaElementi preferiti = new ListaElementi(this,"preferiti.txt");
+    ListaElementi cronologia;
+    ListaElementi preferiti;
 
 
     //////////////////////////////////////////////////////////////////////////////////////////
@@ -159,6 +129,7 @@ public class ArtWorkActivity extends AppCompatActivity
                                         }
 
                                         loading.dismiss();
+
                                         cronologia.add(nome,opera,link_miniatura);
                                     }
 
@@ -314,9 +285,10 @@ public class ArtWorkActivity extends AppCompatActivity
         Intent intent = getIntent();
         final String opera = intent.getStringExtra(EXTRA_MESSAGE); //prende in input la stringa riferimento dell'opera
 
+        cronologia = new ListaElementi(context.getApplicationContext(),"cronologia.txt");
         fillWall(opera);      //crea pagina
 
-
+        preferiti = new ListaElementi(this,"preferiti.txt");
         //SETTA IMAGINE BOTTONE PREFERITI
         if(preferiti.isPresent(opera))
         {

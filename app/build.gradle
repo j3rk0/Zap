@@ -6,7 +6,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.ricca.zap"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
