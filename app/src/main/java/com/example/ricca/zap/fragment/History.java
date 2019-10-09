@@ -1,7 +1,6 @@
 package com.example.ricca.zap.fragment;
 
 import android.os.Bundle;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.ricca.zap.DAO.ListaElementi;
-import com.example.ricca.zap.adapter.HistoryAdapter;
 import com.example.ricca.zap.R;
+import com.example.ricca.zap.adapter.HistoryAdapter;
 public
 class History extends Fragment {
 
@@ -35,7 +33,7 @@ class History extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.history_fragment, container, false);
-        listview =(ListView)view.findViewById(R.id.list);
+        listview = view.findViewById(R.id.list);
         listview.setAdapter(new HistoryAdapter(getActivity()));
         return view;
     }
