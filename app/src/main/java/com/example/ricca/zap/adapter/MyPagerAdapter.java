@@ -29,10 +29,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return History.newInstance();
             case 1:
                 return Home.newInstance();
-            case 2:
-                return Bookmarks.newInstance();
             default:
-                return null;
+                return Bookmarks.newInstance();
+
         }
     }
 
@@ -44,10 +43,8 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
                 return "History";
             case 1:
                 return "Zap!";
-            case 2:
-                return "Bookmarks";
             default:
-                return null;
+                return "Bookmarks";
         }
 
     }

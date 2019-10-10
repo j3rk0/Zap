@@ -6,7 +6,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.example.ricca.zap"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -52,6 +52,7 @@ dependencies {
     implementation 'com.mikhaellopez:circularimageview:4.0.2'
     implementation 'io.github.silvaren:easyrs:0.5.3'
     implementation 'org.tensorflow:tensorflow-android:1.13.1'
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

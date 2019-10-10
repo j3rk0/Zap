@@ -34,14 +34,14 @@ class History extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.history_fragment, container, false);
         listview = view.findViewById(R.id.list);
-        listview.setAdapter(new HistoryAdapter(getActivity()));
+        listview.setAdapter(new HistoryAdapter(getActivity(),listview));
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        listview.setAdapter(new HistoryAdapter(getActivity()));
+        listview.setAdapter(new HistoryAdapter(getActivity(),listview));
     }
 
 

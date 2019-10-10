@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.ricca.zap.DAO.ListaElementi;
 import com.example.ricca.zap.QrScanner;
 import com.example.ricca.zap.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -45,11 +43,7 @@ class Home extends Fragment {
            public void onClick(View view) {startActivity(new Intent(Objects.requireNonNull(getActivity()).getApplicationContext(), QrScanner.class));
            }
        });
-       ListaElementi lista=new ListaElementi(myFragmentView.getContext(),"cronologia.txt");
-       String tocomplete="";
-       for (int i=0;i<lista.size();i++)tocomplete.concat(lista.get(i).getNome()+"\n");
 
-       ((TextView)myFragmentView.findViewById(R.id.prova)).setText(tocomplete);
 
        return myFragmentView;
    }

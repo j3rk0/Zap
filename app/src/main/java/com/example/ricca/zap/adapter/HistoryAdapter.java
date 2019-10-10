@@ -1,31 +1,37 @@
 package com.example.ricca.zap.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.DAO.Elemento;
 import com.example.ricca.zap.DAO.ListaElementi;
 import com.example.ricca.zap.R;
+import com.mikhaellopez.circularimageview.CircularImageView;
+
+import java.util.Calendar;
 
 public class HistoryAdapter extends BaseAdapter {
 
     private ListaElementi list;
     private Context context;
+    private ListView lista_gestita;
 
-    public HistoryAdapter(Context context)
+
+    public HistoryAdapter(Context context,ListView lista_gestita)
     {
         this.context=context;
         this.list = new ListaElementi(context,"cronologia.txt");
-
+        this.lista_gestita=lista_gestita;
     }
-
 
 
     @Override
@@ -42,30 +48,27 @@ public class HistoryAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
 
         if (view==null)
         {
             view= LayoutInflater.from(context).inflate(R.layout.raw_history, null);
         }
 
-        Elemento temp = (Elemento) getItem(i);
+        final Elemento temp = (Elemento) getItem(i);
 
-        TextView txt= view.findViewById(R.id.nome);
-        TextView txt2= view.findViewById(R.id.desc);
-        ImageView imageView = view.findViewById(R.id.copertina);
-        ImageButton remove = view.findViewById(R.id.remove_button);
 
-        txt.setText(temp.getNome());
-        txt2.setText(temp.getCollegamento());
-        Glide.with(this.context).load(temp.getMiniatura()).into(imageView);
-        remove.setOnClickListener(new View.OnClickListener() {
+        ((TextView)view.findViewById(R.id.nome)).setText(temp.getNome());
+        ((TextView)view.findViewById(R.id.desc)).setText(temp.getCollegamento());
+        Glide.with(this.context).load(temp.getMiniatura()).into((CircularImageView)view.findViewById(R.id.copertina));
+        view.findViewById(R.id.remove_button).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                //list.remove();
+
+                list.remove(i);
+                while(lista_gestita==null);
+                lista_gestita.invalidateViews();
             }
         });
-
-
 
         return view;
     }
