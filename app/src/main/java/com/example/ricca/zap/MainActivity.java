@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.ricca.zap.adapter.MyPagerAdapter;
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -24,10 +25,15 @@ public class MainActivity extends AppCompatActivity {
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;  //disabilita status bar
         decorView.setSystemUiVisibility(uiOptions);
 
+
+        DotsIndicator indicator=findViewById(R.id.dots_indicator);
+
         ViewPager vpPager = findViewById(R.id.pager);
         adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
-        vpPager.setCurrentItem(1);
 
+
+        indicator.setViewPager( vpPager);
+        vpPager.setCurrentItem(1);
     }
 }

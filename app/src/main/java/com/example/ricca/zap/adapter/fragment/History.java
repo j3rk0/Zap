@@ -1,4 +1,4 @@
-package com.example.ricca.zap.fragment;
+package com.example.ricca.zap.adapter.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

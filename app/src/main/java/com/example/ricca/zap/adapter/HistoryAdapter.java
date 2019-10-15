@@ -65,7 +65,7 @@ public class HistoryAdapter extends BaseAdapter {
             public void onClick(View v) {
 
                 list.remove(i);
-                while(lista_gestita==null);
+                if(lista_gestita!=null)
                 lista_gestita.invalidateViews();
             }
         });

@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.ricca.zap.fragment.Bookmarks;
-import com.example.ricca.zap.fragment.History;
-import com.example.ricca.zap.fragment.Home;
+import com.example.ricca.zap.adapter.fragment.Bookmarks;
+import com.example.ricca.zap.adapter.fragment.History;
+import com.example.ricca.zap.adapter.fragment.Home;
 
 public class MyPagerAdapter extends FragmentPagerAdapter {
 
