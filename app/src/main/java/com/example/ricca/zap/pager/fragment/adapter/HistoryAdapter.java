@@ -47,7 +47,7 @@ public class HistoryAdapter extends BaseAdapter {
 
         if (view==null)
         {
-            view= LayoutInflater.from(context).inflate(R.layout.raw_history, null);
+            view= LayoutInflater.from(context).inflate(R.layout.sample_lista, null);
         }
 
         final Elemento temp = (Elemento) getItem(i);

@@ -68,7 +68,7 @@ public class QrScanner extends AppCompatActivity {
         Log.v("Found artwork",ref);
         isFounded=true;
 
-        ViewHolder holder=new ViewHolder(R.layout.raw_element);
+        ViewHolder holder=new ViewHolder(R.layout.sample_recognition);
         final DialogPlus dialog= DialogPlus.newDialog(context)
                 .setGravity(Gravity.CENTER)
                 .setCancelable(true)

@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -47,7 +46,7 @@ public class BookmarksAdapter extends BaseAdapter {
     public View getView(final int position, View view, ViewGroup parent) {
         if(view==null)
         {
-            view= LayoutInflater.from(context).inflate(R.layout.raw_history,null);
+            view= LayoutInflater.from(context).inflate(R.layout.sample_lista,null);
         }
         final Elemento temp=(Elemento)getItem(position);
         ((TextView)view.findViewById(R.id.nome)).setText(temp.getNome());

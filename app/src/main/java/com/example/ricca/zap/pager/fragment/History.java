@@ -32,7 +32,7 @@ class History extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.history_fragment, container, false);
+        View view =  inflater.inflate(R.layout.fragment_history, container, false);
         ListView listview = view.findViewById(R.id.list_history);
         adapter=new HistoryAdapter(getActivity(), listview);
         listview.setAdapter(adapter);
