@@ -243,10 +243,10 @@ public class ArtWorkActivity extends AppCompatActivity
                         if (player.isPlaying()) {
                             player.pause();
                             barHandler.removeCallbacks(updateBar);
-                            playPause.setBackgroundResource(R.drawable.play_button);
+                            playPause.setBackgroundResource(R.drawable.ic_play_circle_outline_black_36dp);
                         } else {
                             player.start();
-                            playPause.setBackgroundResource(R.drawable.pause_button);
+                            playPause.setBackgroundResource(R.drawable.ic_pause_circle_outline_black_36dp);
                             barHandler.postDelayed(updateBar, 0);
                         }
                     }
@@ -290,14 +290,8 @@ public class ArtWorkActivity extends AppCompatActivity
 
         preferiti = new ListaElementi(this,"preferiti.txt");
         //SETTA IMAGINE BOTTONE PREFERITI
-        if(preferiti.isPresent(opera))
-        {
-            //TODO
-            //setta icona premuta
-        }else{
-            //TODO
-            //setta icona non premuta
-        }
+        if(preferiti.isPresent(opera)) findViewById(R.id.bookmark_artwork).setBackgroundResource(R.drawable.ic_bookmark_white_36dp);
+        else findViewById(R.id.bookmark_artwork).setBackgroundResource(R.drawable.ic_bookmark_border_white_36dp);
 
 
 
@@ -306,10 +300,14 @@ public class ArtWorkActivity extends AppCompatActivity
             public void onClick(View view) {
                 //cosa accade quando premi il bottone
 
-                if(preferiti.isPresent(opera))
+                if(preferiti.isPresent(opera)) {
                     preferiti.remove(opera);
+                    findViewById(R.id.bookmark_artwork).setBackgroundResource(R.drawable.ic_bookmark_border_white_36dp);
+                }
                 else
-                    preferiti.add(nome,opera,link_miniatura);
+                {preferiti.add(nome,opera,link_miniatura);
+                    findViewById(R.id.bookmark_artwork).setBackgroundResource(R.drawable.ic_bookmark_white_36dp);
+                }
             }
         });
     }

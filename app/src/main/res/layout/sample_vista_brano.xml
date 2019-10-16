@@ -17,10 +17,10 @@
 
         <Button
             android:id="@+id/pausebtn"
-            android:layout_width="28dp"
+            android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_weight="1"
-            android:background="@drawable/play_button" />
+            android:background="@drawable/ic_play_circle_outline_black_36dp" />
 
         <SeekBar
             android:id="@+id/barra"

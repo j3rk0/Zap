@@ -1,17 +1,17 @@
-package com.example.ricca.zap.adapter;
+package com.example.ricca.zap.pager;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.ricca.zap.adapter.fragment.Bookmarks;
-import com.example.ricca.zap.adapter.fragment.History;
-import com.example.ricca.zap.adapter.fragment.Home;
+import com.example.ricca.zap.pager.fragment.Bookmarks;
+import com.example.ricca.zap.pager.fragment.History;
+import com.example.ricca.zap.pager.fragment.Home;
 
-public class MyPagerAdapter extends FragmentPagerAdapter {
+public class HomePager extends FragmentPagerAdapter {
 
-    public MyPagerAdapter(FragmentManager fragmentManager) {
+    public HomePager(FragmentManager fragmentManager) {
         super(fragmentManager);
     }
 

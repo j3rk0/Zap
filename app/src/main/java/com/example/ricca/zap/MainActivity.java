@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.ricca.zap.adapter.MyPagerAdapter;
+import com.example.ricca.zap.pager.HomePager;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         DotsIndicator indicator=findViewById(R.id.dots_indicator);
 
         ViewPager vpPager = findViewById(R.id.pager);
-        adapterViewPager = new MyPagerAdapter(getSupportFragmentManager());
+        adapterViewPager = new HomePager(getSupportFragmentManager());
         vpPager.setAdapter(adapterViewPager);
 
 

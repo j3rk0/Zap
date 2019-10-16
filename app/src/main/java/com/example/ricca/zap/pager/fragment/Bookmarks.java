@@ -1,15 +1,21 @@
-package com.example.ricca.zap.adapter.fragment;
+package com.example.ricca.zap.pager.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import androidx.fragment.app.Fragment;
 
 import com.example.ricca.zap.R;
+import com.example.ricca.zap.pager.fragment.adapter.BookmarksAdapter;
+import com.example.ricca.zap.pager.fragment.adapter.HistoryAdapter;
 
 public class Bookmarks extends Fragment {
+
+    private BaseAdapter adapter;
 
     public static Bookmarks newInstance() {
         Bookmarks fragment = new Bookmarks();
@@ -25,6 +31,16 @@ public class Bookmarks extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_bookmarks, container, false);
+        View view=inflater.inflate(R.layout.fragment_bookmarks,container,false);
+        ListView listView = view.findViewById((R.id.list_bookmarks));
+        adapter=new BookmarksAdapter(getActivity(), listView);
+        listView.setAdapter(adapter);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 }
