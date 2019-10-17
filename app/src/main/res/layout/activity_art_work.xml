@@ -23,7 +23,7 @@
             app:srcCompat="@drawable/ic_arrow_back_white_36dp" />
 
         <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/miniatura"
+            android:id="@+id/icon"
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:scaleType="centerInside"

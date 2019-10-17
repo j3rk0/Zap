@@ -74,8 +74,9 @@ public class ListaElementi {
     }
 
     public boolean isPresent(String collegamento)    {
-        for(Elemento e:listaelementi)
-            if(e.getCollegamento().equals(collegamento)) return true;
+
+        for(int i=0; i< listaelementi.size();i++)
+            if(listaelementi.get(i).getCollegamento().equals(collegamento))return true;
         return false;
     }
 
@@ -133,8 +134,7 @@ public class ListaElementi {
 
     public void remove(String collegamento)
     {
-        int i=0;
-        while(i<listaelementi.size())
+        for(int i=0;i<listaelementi.size();i++)
             if(listaelementi.get(i).getCollegamento().equals(collegamento))
                 listaelementi.remove(i);
 

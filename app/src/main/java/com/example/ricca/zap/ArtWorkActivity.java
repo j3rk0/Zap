@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -280,7 +281,7 @@ public class ArtWorkActivity extends AppCompatActivity
         riferimentoDB = FirebaseDatabase.getInstance();
         wall = findViewById(R.id.bacheca);
         title= findViewById(R.id.artwork_title);
-        miniatura=findViewById(R.id.miniatura);
+        miniatura=findViewById(R.id.icon);
 
         Intent intent = getIntent();
         final String opera = intent.getStringExtra(EXTRA_MESSAGE); //prende in input la stringa riferimento dell'opera
@@ -290,23 +291,26 @@ public class ArtWorkActivity extends AppCompatActivity
 
         preferiti = new ListaElementi(this,"preferiti.txt");
         //SETTA IMAGINE BOTTONE PREFERITI
-        if(preferiti.isPresent(opera)) findViewById(R.id.bookmark_artwork).setBackgroundResource(R.drawable.ic_bookmark_white_36dp);
-        else findViewById(R.id.bookmark_artwork).setBackgroundResource(R.drawable.ic_bookmark_border_white_36dp);
+
+        final ImageButton bookmark=findViewById(R.id.bookmark_artwork);
+        if(preferiti.isPresent(opera)) bookmark.setBackgroundResource(R.drawable.ic_bookmark_white_36dp);
+        else bookmark.setBackgroundResource(R.drawable.ic_bookmark_border_white_36dp);
 
 
 
-        (findViewById(R.id.bookmark_artwork)).setOnClickListener(new View.OnClickListener() {
+        bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //cosa accade quando premi il bottone
 
                 if(preferiti.isPresent(opera)) {
                     preferiti.remove(opera);
-                    findViewById(R.id.bookmark_artwork).setBackgroundResource(R.drawable.ic_bookmark_border_white_36dp);
+                    bookmark.setBackgroundResource(R.drawable.ic_bookmark_border_white_36dp);
                 }
                 else
-                {preferiti.add(nome,opera,link_miniatura);
-                    findViewById(R.id.bookmark_artwork).setBackgroundResource(R.drawable.ic_bookmark_white_36dp);
+                {
+                    preferiti.add(nome,opera,link_miniatura);
+                    bookmark.setBackgroundResource(R.drawable.ic_bookmark_white_36dp);
                 }
             }
         });

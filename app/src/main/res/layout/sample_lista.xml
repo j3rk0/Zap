@@ -18,28 +18,37 @@
 
     <TextView
         android:id="@+id/nome"
-        android:layout_width="140dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:text="nome"
+        android:textSize="24sp"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintEnd_toStartOf="@+id/remove_button"
         app:layout_constraintStart_toEndOf="@+id/copertina"
         app:layout_constraintTop_toTopOf="@+id/copertina" />
 
     <TextView
         android:id="@+id/desc"
-        android:layout_width="235dp"
-        android:layout_height="34dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="8dp"
+        android:ellipsize="end"
         android:text="desc"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/copertina"
-        app:layout_constraintStart_toEndOf="@+id/copertina" />
+        app:layout_constraintEnd_toEndOf="@+id/remove_button"
+        app:layout_constraintStart_toEndOf="@+id/copertina"
+        app:layout_constraintTop_toBottomOf="@+id/nome" />
 
     <ImageButton
         android:id="@+id/remove_button"
         android:layout_width="34dp"
         android:layout_height="34dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/ic_delete_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/nome" />

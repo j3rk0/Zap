@@ -53,6 +53,7 @@ dependencies {
     implementation 'io.github.silvaren:easyrs:0.5.3'
     implementation 'org.tensorflow:tensorflow-android:1.13.1'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+    implementation "com.github.nikartm:fit-button:1.2.1"
 }
 
 apply plugin: 'com.google.gms.google-services'
