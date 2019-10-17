@@ -7,34 +7,38 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--    DA PROBLEMI CON INFLARTER zap.java :34
-        <pl.droidsonroids.gif.GifImageView
-            android:id="@+id/gifImageView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="96dp"
-            android:src="@drawable/round_animation"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    -->
+
+
+    <pl.bclogic.pulsator4droid.library.PulsatorLayout
+        android:id="@+id/pulsator"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:pulse_color="@color/colorAccent"
+        app:pulse_count="8"
+        app:pulse_duration="7000"
+        app:pulse_interpolator="Accelerate"
+        app:pulse_repeat="0" />
+
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/icon"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="70dp"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
         android:scaleType="centerInside"
         android:transitionName="miniatura"
         app:civ_border="true"
-        app:civ_border_color="#03DAC6"
+        app:civ_border_color="#FFFFFF"
         app:civ_border_width="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.544"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:layout_constraintBottom_toBottomOf="@+id/pulsator"
+        app:layout_constraintEnd_toEndOf="@+id/pulsator"
+        app:layout_constraintStart_toStartOf="@+id/pulsator"
+        app:layout_constraintTop_toTopOf="@+id/pulsator"
+        app:srcCompat="@drawable/logo_circle" />
 
     <LinearLayout
         android:id="@+id/camera_button"
@@ -46,9 +50,10 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/icon"
         app:layout_constraintEnd_toEndOf="@+id/icon"
-        app:layout_constraintHorizontal_bias="0.617"
         app:layout_constraintStart_toStartOf="@+id/icon"
-        app:layout_constraintTop_toTopOf="@+id/icon" />
+        app:layout_constraintTop_toTopOf="@+id/icon">
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textView2"
@@ -62,6 +67,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/icon" />
+        app:layout_constraintTop_toBottomOf="@+id/pulsator" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

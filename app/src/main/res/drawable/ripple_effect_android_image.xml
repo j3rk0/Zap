@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="#9003DAC6">
+    android:color="@color/colorAccent">
     <item>
         <color android:color="#00FFFFFF" />
     </item>
     <item android:id="@android:id/mask">
         <shape android:shape="oval">
-            <solid android:color="?android:colorAccent" />
+            <solid android:color="#C1FFFFFF" />
         </shape>
     </item>
 </ripple>
