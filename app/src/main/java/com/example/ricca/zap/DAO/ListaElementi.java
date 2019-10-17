@@ -24,6 +24,12 @@ public class ListaElementi {
     private String file;
     private Context context;
 
+    public boolean isLoaded() {
+        return loaded;
+    }
+
+    private boolean loaded=false;
+
 
     public ListaElementi(final Context context,final String file) {
         this.context = context;
@@ -66,6 +72,7 @@ public class ListaElementi {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                    loaded=true;
                     }
                 }
             }
@@ -114,6 +121,7 @@ public class ListaElementi {
 
 
     public void add(String nome, String collegamento, String miniatura) {
+        loaded=false;
         for(Elemento A:listaelementi){
             if (A.getCollegamento().equals(collegamento))
                 return;
@@ -122,18 +130,22 @@ public class ListaElementi {
         updatefile();
         if(file.equals("preferiti.txt"))
             Toast.makeText(context,"Aggiunto "+nome+" ai preferiti",Toast.LENGTH_SHORT).show();
+        loaded=true;
     }
 
     public void remove(int i) {
 
+        loaded=false;
         listaelementi.remove(i);
         updatefile();
         if(file.equals("preferiti.txt"))
             Toast.makeText(context,"Elemento rimosso dai preferiti",Toast.LENGTH_SHORT).show();
+        loaded=true;
     }
 
     public void remove(String collegamento)
     {
+        loaded=false;
         for(int i=0;i<listaelementi.size();i++)
             if(listaelementi.get(i).getCollegamento().equals(collegamento))
                 listaelementi.remove(i);
@@ -141,6 +153,7 @@ public class ListaElementi {
         updatefile();
         if(file.equals("preferiti.txt"))
             Toast.makeText(context,"Elemento rimosso dai preferiti",Toast.LENGTH_SHORT).show();
+        loaded=true;
     }
 
     public  Elemento get(int i) {

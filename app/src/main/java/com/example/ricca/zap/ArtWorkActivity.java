@@ -258,7 +258,6 @@ public class ArtWorkActivity extends AppCompatActivity
 
     /////////////////////////////////////////////////////////////////////////////////////////
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -292,9 +291,24 @@ public class ArtWorkActivity extends AppCompatActivity
         preferiti = new ListaElementi(this,"preferiti.txt");
         //SETTA IMAGINE BOTTONE PREFERITI
 
+
         final ImageButton bookmark=findViewById(R.id.bookmark_artwork);
-        if(preferiti.isPresent(opera)) bookmark.setBackgroundResource(R.drawable.ic_bookmark_white_36dp);
-        else bookmark.setBackgroundResource(R.drawable.ic_bookmark_border_white_36dp);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(!preferiti.isLoaded()) {
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(preferiti.isPresent(opera)) bookmark.setImageResource(R.drawable.ic_bookmark_white_36dp);
+                else bookmark.setImageResource(R.drawable.ic_bookmark_border_white_36dp);
+            }
+        }).start();
+
 
 
 
@@ -305,15 +319,14 @@ public class ArtWorkActivity extends AppCompatActivity
 
                 if(preferiti.isPresent(opera)) {
                     preferiti.remove(opera);
-                    bookmark.setBackgroundResource(R.drawable.ic_bookmark_border_white_36dp);
+                    bookmark.setImageResource(R.drawable.ic_bookmark_border_white_36dp);
                 }
                 else
                 {
                     preferiti.add(nome,opera,link_miniatura);
-                    bookmark.setBackgroundResource(R.drawable.ic_bookmark_white_36dp);
+                    bookmark.setImageResource(R.drawable.ic_bookmark_white_36dp);
                 }
             }
         });
     }
-
 }
