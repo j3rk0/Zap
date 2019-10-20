@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/radice_wall"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,8 @@
         android:id="@+id/artwork_header"
         android:layout_width="match_parent"
         android:layout_height="199dp"
-        android:background="#03DAC6">
+        android:background="#03DAC6"
+        android:elevation="10dp">
 
         <ImageButton
             android:id="@+id/back_artwork"
@@ -33,7 +35,9 @@
             app:layout_constraintStart_toEndOf="@+id/back_artwork"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.8"
-            app:srcCompat="@color/dialogplus_card_shadow" />
+            app:civ_shadow="true"
+            app:civ_shadow_radius="10"
+            tools:srcCompat="@android:color/white" />
 
         <ImageButton
             android:id="@+id/bookmark_artwork"
@@ -59,9 +63,10 @@
             android:id="@+id/artwork_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:textStyle="bold"
             android:transitionName="titolo"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +77,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:elevation="4dp">
 
 
         <LinearLayout

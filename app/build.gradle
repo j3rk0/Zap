@@ -53,6 +53,7 @@ dependencies {
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     implementation "com.github.nikartm:fit-button:1.2.1"
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
+    implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

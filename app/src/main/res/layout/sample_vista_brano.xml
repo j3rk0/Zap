@@ -38,7 +38,9 @@
         android:id="@+id/titoloBrano"
         android:layout_width="315dp"
         android:layout_height="wrap_content"
-        android:textAlignment="center" />
+        android:fontFamily="@font/roboto"
+        android:textAlignment="center"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/space2"

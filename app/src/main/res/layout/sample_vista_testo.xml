@@ -15,5 +15,7 @@
         android:id="@+id/contenutoTesto"
         android:layout_width="315dp"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto"
+        android:textSize="16sp"
         tools:textAlignment="center" />
 </LinearLayout>

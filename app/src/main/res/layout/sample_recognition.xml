@@ -19,12 +19,14 @@
         app:layout_constraintHorizontal_bias="0.519"
         app:layout_constraintStart_toStartOf="@+id/element_name"
         app:layout_constraintTop_toTopOf="parent"
+        app:civ_shadow="true"
         tools:srcCompat="@tools:sample/avatars[2]" />
 
     <TextView
         android:id="@+id/element_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_medium"
         android:text="Cane felice"
         android:textAlignment="center"
         android:textColor="#FFFFFF"

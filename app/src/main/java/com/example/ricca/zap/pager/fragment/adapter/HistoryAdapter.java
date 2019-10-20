@@ -70,7 +70,7 @@ public class HistoryAdapter extends BaseAdapter {
                 lista_gestita.invalidateViews();
             }
         });
-        view.findViewById(R.id.copertina).setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent start=new Intent(context, ArtWorkActivity.class);

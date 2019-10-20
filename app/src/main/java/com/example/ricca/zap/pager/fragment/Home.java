@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import com.example.ricca.zap.QrScanner;
 import com.example.ricca.zap.R;
 
-
 import java.util.Objects;
 
 import pl.bclogic.pulsator4droid.library.PulsatorLayout;
@@ -39,7 +38,6 @@ class Home extends Fragment {
                             @Nullable Bundle savedInstanceState) {
 
        View myFragmentView = inflater.inflate(R.layout.fragment_zap, container, false);
-
        ((PulsatorLayout)myFragmentView.findViewById(R.id.pulsator)).start();
        myFragmentView.findViewById(R.id.camera_button).setOnClickListener(new View.OnClickListener() {
            @Override

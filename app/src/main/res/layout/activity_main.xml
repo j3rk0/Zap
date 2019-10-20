@@ -25,16 +25,16 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="23dp"
-        app:dotsColor="#444343"
+        app:dotsColor="?attr/colorPrimaryDark"
         app:dotsCornerRadius="8dp"
-        app:dotsSize="10dp"
+        app:dotsSize="15dp"
         app:dotsSpacing="4dp"
         app:dotsStrokeWidth="2dp"
         app:layout_constraintBottom_toTopOf="@+id/pager"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:selectedDotColor="#00BCD4" />
+        app:selectedDotColor="@color/colorPrimary" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
