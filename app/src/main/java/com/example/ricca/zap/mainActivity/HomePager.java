@@ -1,13 +1,13 @@
-package com.example.ricca.zap.pager;
+package com.example.ricca.zap.mainActivity;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.ricca.zap.pager.fragment.Bookmarks;
-import com.example.ricca.zap.pager.fragment.History;
-import com.example.ricca.zap.pager.fragment.Home;
+import com.example.ricca.zap.mainActivity.fragment.QrScanner;
+import com.example.ricca.zap.mainActivity.fragment.Bookmarks;
+import com.example.ricca.zap.mainActivity.fragment.History;
 
 public class HomePager extends FragmentPagerAdapter {
 
@@ -28,7 +28,7 @@ public class HomePager extends FragmentPagerAdapter {
             case 0:
                 return History.newInstance();
             case 1:
-                return Home.newInstance();
+                return QrScanner.newInstance();
             default:
                 return Bookmarks.newInstance();
 

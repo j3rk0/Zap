@@ -1,4 +1,4 @@
-package com.example.ricca.zap.pager.fragment;
+package com.example.ricca.zap.mainActivity.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,8 +10,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 
 import com.example.ricca.zap.R;
-import com.example.ricca.zap.pager.fragment.adapter.BookmarksAdapter;
-import com.example.ricca.zap.pager.fragment.adapter.HistoryAdapter;
+import com.example.ricca.zap.mainActivity.fragment.adapter.BookmarksAdapter;
 
 public class Bookmarks extends Fragment {
 

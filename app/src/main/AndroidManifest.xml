@@ -41,7 +41,7 @@
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="label,barcode" />
 
-        <activity android:name=".QrScanner" />
+        <activity android:name=".mainActivity.fragment.QrScanner" />
         <activity android:name=".NfcScanner"></activity>
     </application>
 

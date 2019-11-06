@@ -1,4 +1,4 @@
-package com.example.ricca.zap.pager.fragment;
+package com.example.ricca.zap.mainActivity.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.ricca.zap.R;
-import com.example.ricca.zap.pager.fragment.adapter.HistoryAdapter;
+import com.example.ricca.zap.mainActivity.fragment.adapter.HistoryAdapter;
 public
 class History extends Fragment {
 

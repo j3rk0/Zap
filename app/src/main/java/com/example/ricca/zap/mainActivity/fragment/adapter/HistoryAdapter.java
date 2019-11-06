@@ -1,4 +1,4 @@
-package com.example.ricca.zap.pager.fragment.adapter;
+package com.example.ricca.zap.mainActivity.fragment.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,8 +13,6 @@ import com.bumptech.glide.Glide;
 import com.example.ricca.zap.ArtWorkActivity;
 import com.example.ricca.zap.DAO.Elemento;
 import com.example.ricca.zap.DAO.ListaElementi;
-import com.example.ricca.zap.MainActivity;
-import com.example.ricca.zap.QrScanner;
 import com.example.ricca.zap.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 

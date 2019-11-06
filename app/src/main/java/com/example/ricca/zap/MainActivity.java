@@ -1,13 +1,19 @@
 package com.example.ricca.zap;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.ricca.zap.pager.HomePager;
+import com.example.ricca.zap.mainActivity.HomePager;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 
@@ -35,5 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
         indicator.setViewPager( vpPager);
         vpPager.setCurrentItem(1);
+        askPermissions();
+    }
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    private void askPermissions()  ////////////chiede permessi
+    {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},2);
+        if (!(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
     }
 }
+

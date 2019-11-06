@@ -1,29 +1,30 @@
-package com.example.ricca.zap;
+package com.example.ricca.zap.mainActivity.fragment;
 
-import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
 import androidx.renderscript.RenderScript;
 
 import com.bumptech.glide.Glide;
+import com.example.ricca.zap.ArtWorkActivity;
+import com.example.ricca.zap.R;
 import com.example.ricca.zap.TFMobile.Classifier;
 import com.example.ricca.zap.TFMobile.TensorFlowImageClassifier;
 import com.google.firebase.FirebaseApp;
@@ -54,15 +55,25 @@ import io.github.silvaren.easyrs.tools.Nv21Image;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class QrScanner extends AppCompatActivity {
+public class QrScanner extends Fragment {
 
     private Fotoapparat fotoapparat;
-    private final Activity context=this;
+    private Context context;
+    private Activity activity;
+    private DialogPlus currDialog=null;
     private Classifier classifier=null;
     private List<Classifier.Recognition> results;
     private boolean isFounded=false;
+    private boolean isActive=false;
     private DataSnapshot ds=null;
 
+
+    public static QrScanner newInstance() {
+        QrScanner fragment = new QrScanner();
+        Bundle args = new Bundle();
+        fragment.setArguments(args);
+        return fragment;
+    }
     private void showDialog(final String ref)
     {
         Log.v("Found artwork",ref);
@@ -79,15 +90,18 @@ public class QrScanner extends AppCompatActivity {
                     @Override
                     public void onDismiss(DialogPlus dialog) {
                         isFounded=false;
+                        currDialog=null;
                     }
                 })
                 .setOnBackPressListener(new OnBackPressListener() {
                     @Override
                     public void onBackPressed(DialogPlus dialogPlus) {
                         isFounded=false;
+                        currDialog=null;
                     }
                 })
                 .create();
+        currDialog=dialog;
         final CircularImageView copertina= holder.getInflatedView().findViewById(R.id.copertina);
         final TextView titolo=holder.getInflatedView().findViewById(R.id.element_name);
 
@@ -95,17 +109,17 @@ public class QrScanner extends AppCompatActivity {
         copertina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ActivityOptionsCompat transition= ActivityOptionsCompat.makeSceneTransitionAnimation(context,
+                ActivityOptionsCompat transition= ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
                 Pair.create((View)copertina,"miniatura"),
                 Pair.create((View)titolo,"titolo"));
 
-                Intent start=new Intent(QrScanner.this,ArtWorkActivity.class);
+                Intent start=new Intent(context, ArtWorkActivity.class);
                 start.putExtra(EXTRA_MESSAGE,ref);
                 startActivity(start,transition.toBundle());
             }
         });
 
-        context.runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 titolo.setText(ds.child(ref+"/nome").getValue(String.class));
@@ -117,18 +131,32 @@ public class QrScanner extends AppCompatActivity {
     }
 
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser && fotoapparat!=null)fotoapparat.start();
+        else if(fotoapparat!=null) fotoapparat.stop();
+        if(currDialog!=null)currDialog.dismiss();
+       if(isActive)
+       {getView().findViewById(R.id.clicca).setVisibility(View.VISIBLE);
+       getView().findViewById(R.id.activeCamera).setVisibility(View.VISIBLE);
+       isActive=false;}
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        this.context=context;
+        this.activity=getActivity();
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        ///////////////////////////////////IMPOSTAZIONI
-
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, //attoviamo il fullscreen
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.activity_qr_scanner);
-        askPermissions(); //chiedo permessi necessari
+        View v = inflater.inflate(R.layout.fragment_scanner, container, false);
 
         ///////////////////////////////////////FIREBASE
         FirebaseApp.initializeApp(context);
@@ -149,7 +177,7 @@ public class QrScanner extends AppCompatActivity {
         //creazione classificatore
         final RenderScript rs=RenderScript.create(context);
         try {
-            classifier= TensorFlowImageClassifier.create(this.getAssets(),
+            classifier= TensorFlowImageClassifier.create(context.getAssets(),
                     "file:///android_asset/graph.pb",
                     "file:///android_asset/labels.txt",
                     224,224,128,128f,
@@ -160,7 +188,16 @@ public class QrScanner extends AppCompatActivity {
 
         /////////////////////////////////////////////FOTOCAMERA
 
-        CameraView cameraView = findViewById(R.id.camera);
+        final View clicca=v.findViewById(R.id.clicca);
+        CameraView cameraView = v.findViewById(R.id.camera);
+        v.findViewById(R.id.activeCamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isActive=true;
+                v.setVisibility(View.GONE);
+                clicca.setVisibility(View.GONE);
+            }
+        });
         fotoapparat=Fotoapparat
                 .with(cameraView.getContext())
                 .into(cameraView)           // view which will draw the camera preview
@@ -172,7 +209,7 @@ public class QrScanner extends AppCompatActivity {
                     @Override
                     public void process(@NotNull Frame frame)
                     {
-                        if(!isFounded && ds!=null) {//se non è già stato trovato un possibile risultato
+                        if(isActive && !isFounded && ds!=null) {//se non è già stato trovato un possibile risultato
                             //analizzo il frame
                             results = classifier.recognizeImage(Nv21Image.nv21ToBitmap(rs, frame.getImage(), frame.getSize().width, frame.getSize().height));
 
@@ -189,39 +226,35 @@ public class QrScanner extends AppCompatActivity {
                 })
                 .build();
         fotoapparat.start();
+        return v;
 
     }
 
     ////////////////////// ciclo di vita dell'activity
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         fotoapparat.start();
     }
 
     @Override
-    protected void onPause() {
+    public void onPause() {
         fotoapparat.stop();
         super.onPause();
     }
 
-    @Override protected void onStart() {
+    @Override
+    public void onStart() {
         super.onStart();
         fotoapparat.start();
     }
 
-    @Override protected void onStop()  {
+    @Override
+    public void onStop()  {
         super.onStop();
         fotoapparat.stop();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void askPermissions()  ////////////chiede permessi
-    {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},2);
-        if (!(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-    }
+
 }
 

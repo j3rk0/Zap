@@ -1,4 +1,4 @@
-package com.example.ricca.zap.pager.fragment.adapter;
+package com.example.ricca.zap.mainActivity.fragment.adapter;
 
 import android.content.Context;
 import android.content.Intent;
