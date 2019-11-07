@@ -52,6 +52,7 @@ import io.fotoapparat.selector.LensPositionSelectorsKt;
 import io.fotoapparat.selector.ResolutionSelectorsKt;
 import io.fotoapparat.view.CameraView;
 import io.github.silvaren.easyrs.tools.Nv21Image;
+import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -140,6 +141,7 @@ public class QrScanner extends Fragment {
        if(isActive)
        {getView().findViewById(R.id.clicca).setVisibility(View.VISIBLE);
        getView().findViewById(R.id.activeCamera).setVisibility(View.VISIBLE);
+       ((PulsatorLayout)getView().findViewById(R.id.pulsator)).start();
        isActive=false;}
     }
 
@@ -158,6 +160,8 @@ public class QrScanner extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_scanner, container, false);
 
+        final PulsatorLayout pulsator=v.findViewById(R.id.pulsator);
+        pulsator.start();
         ///////////////////////////////////////FIREBASE
         FirebaseApp.initializeApp(context);
         FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
@@ -196,6 +200,7 @@ public class QrScanner extends Fragment {
                 isActive=true;
                 v.setVisibility(View.GONE);
                 clicca.setVisibility(View.GONE);
+                pulsator.stop();
             }
         });
         fotoapparat=Fotoapparat

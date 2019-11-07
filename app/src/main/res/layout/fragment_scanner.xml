@@ -4,18 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:backgroundTint="@android:color/white"
+    android:background="@android:color/background_light"
+    android:backgroundTint="@android:color/background_light"
     tools:context=".mainActivity.fragment.QrScanner">
 
-    <io.fotoapparat.view.CameraView
-        android:id="@+id/camera"
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/camera_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="75dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -23,33 +26,63 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
-    </io.fotoapparat.view.CameraView>
+        <io.fotoapparat.view.CameraView
+            android:id="@+id/camera"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/clicca"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:shadowColor="#000000"
-        android:shadowRadius="0"
-        android:text="Clicca per attvare la camera"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/camera"
-        app:layout_constraintEnd_toEndOf="@+id/camera"
-        app:layout_constraintStart_toStartOf="@+id/camera"
-        app:layout_constraintTop_toTopOf="parent" />
+        </io.fotoapparat.view.CameraView>
 
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/activeCamera"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:layout_marginBottom="50dp"
-        android:src="@drawable/logo_circle"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/clicca"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:elevation="4dp"
+                android:shadowColor="#000000"
+                android:shadowRadius="8"
+                android:text="Clicca per attvare la camera"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="20dp"
+                app:autoSizeTextType="uniform"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activeCamera" />
+
+            <pl.bclogic.pulsator4droid.library.PulsatorLayout
+                android:id="@+id/pulsator"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                app:layout_constraintBottom_toBottomOf="@id/activeCamera"
+                app:layout_constraintEnd_toEndOf="@id/activeCamera"
+                app:layout_constraintStart_toStartOf="@id/activeCamera"
+                app:layout_constraintTop_toTopOf="@id/activeCamera"
+                app:pulse_color="@color/colorAccent"
+                app:pulse_count="4"
+                app:pulse_duration="3000"
+                app:pulse_interpolator="Linear"
+                app:pulse_repeat="0" />
+
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:id="@+id/activeCamera"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_marginBottom="15dp"
+                android:src="@drawable/logo_circle"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
