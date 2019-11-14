@@ -1,10 +1,11 @@
 package com.example.ricca.zap.mainActivity.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
@@ -67,7 +67,7 @@ public class Camera extends Fragment {
     private boolean isFounded=false;
     private boolean isActive=false;
     private DataSnapshot ds=null;
-
+    private View to_hide=null;
 
     public static Camera newInstance() {
         Camera fragment = new Camera();
@@ -75,11 +75,15 @@ public class Camera extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
+    //viene chiamato quando viene trovata un opera
     private void showDialog(final String ref)
     {
         Log.v("Found artwork",ref);
+        //blocca il riconoscitore
         isFounded=true;
 
+        //creazione del dialog
         ViewHolder holder=new ViewHolder(R.layout.sample_recognition);
         final DialogPlus dialog= DialogPlus.newDialog(context)
                 .setGravity(Gravity.CENTER)
@@ -89,37 +93,42 @@ public class Camera extends Fragment {
                 .setOverlayBackgroundResource(Color.TRANSPARENT)
                 .setOnDismissListener(new OnDismissListener() {
                     @Override
-                    public void onDismiss(DialogPlus dialog) {
+                    public void onDismiss(DialogPlus dialog) {//se il dialog viene dismesso attiva il riconoscitore
                         isFounded=false;
                         currDialog=null;
                     }
                 })
                 .setOnBackPressListener(new OnBackPressListener() {
                     @Override
-                    public void onBackPressed(DialogPlus dialogPlus) {
+                    public void onBackPressed(DialogPlus dialogPlus) {//se viene premuto indietro riattiva il riconoscitore
                         isFounded=false;
                         currDialog=null;
                     }
                 })
                 .create();
         currDialog=dialog;
+
+
         final CircularImageView copertina= holder.getInflatedView().findViewById(R.id.copertina);
         final TextView titolo=holder.getInflatedView().findViewById(R.id.element_name);
 
-
+        //se si clicca la copertina apre artworkactivity
         copertina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //anima il cambio di activity con una transizione
                 ActivityOptionsCompat transition= ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
                 Pair.create((View)copertina,"miniatura"),
                 Pair.create((View)titolo,"titolo"));
 
+                //passa ad artworkactivity il riferimento all'opera
                 Intent start=new Intent(context, ArtWorkActivity.class);
                 start.putExtra(EXTRA_MESSAGE,ref);
                 startActivity(start,transition.toBundle());
             }
         });
 
+        //imposta la grafica del dialog
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -132,18 +141,37 @@ public class Camera extends Fragment {
     }
 
 
+    //viene chiamato quando si cambia fragment
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+
+        //fa partire la camera
         if(isVisibleToUser && fotoapparat!=null)fotoapparat.start();
+        //se il fragment non è visibile blocca la camera
         else if(fotoapparat!=null) fotoapparat.stop();
+        //se il fragment non è visibile nasconde i dialog
         if(currDialog!=null)currDialog.dismiss();
-       if(isActive)
-       {getView().findViewById(R.id.clicca).setVisibility(View.VISIBLE);
-       getView().findViewById(R.id.activeCamera).setVisibility(View.VISIBLE);
-       ((PulsatorLayout)getView().findViewById(R.id.pulsator)).start();
-       isActive=false;}
+        //se la camera era attiva la blocca e mostra il bottone per attivarla
+        if(isActive)
+        {
+            //mostra il bottone con un animazione di fadein
+            to_hide.animate()
+                    .alpha(1.0f)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            to_hide.setVisibility(View.VISIBLE);
+                        }
+                    });
+            //fa partire l'animazione
+            ((PulsatorLayout)getView().findViewById(R.id.pulsator)).start();
+            //attiva camera
+            isActive=false;
+        }
     }
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -152,7 +180,7 @@ public class Camera extends Fragment {
         this.activity=getActivity();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.M)
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -160,9 +188,11 @@ public class Camera extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_scanner, container, false);
 
-        final PulsatorLayout pulsator=v.findViewById(R.id.pulsator);
-        pulsator.start();
+        //fa partire l'animazione
+        ((PulsatorLayout)v.findViewById(R.id.pulsator)).start();
         ///////////////////////////////////////FIREBASE
+
+        //inizializza database
         FirebaseApp.initializeApp(context);
         FirebaseDatabase.getInstance().getReference().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -190,19 +220,29 @@ public class Camera extends Fragment {
             Log.e("Main Activity", Objects.requireNonNull(e.getMessage()));
         }
 
-        /////////////////////////////////////////////FOTOCAMERA
 
-        final View clicca=v.findViewById(R.id.clicca);
-        CameraView cameraView = v.findViewById(R.id.camera);
+
+        //quando si preme il bottone attiva la camera e lo nasconde con un fade
         v.findViewById(R.id.activeCamera).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+                //attiva camera
                 isActive=true;
-                v.setVisibility(View.GONE);
-                clicca.setVisibility(View.GONE);
-                pulsator.stop();
+                //animazione scomprsa
+                to_hide.animate()
+                        .alpha(0.0f)
+                        .setDuration(500)
+                        .setListener(new AnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                super.onAnimationEnd(animation);
+                                v.findViewById(R.id.to_hide).setVisibility(View.GONE);
+                            }
+                        });
             }
         });
+
+        CameraView cameraView = v.findViewById(R.id.camera);
         fotoapparat=Fotoapparat
                 .with(cameraView.getContext())
                 .into(cameraView)           // view which will draw the camera preview

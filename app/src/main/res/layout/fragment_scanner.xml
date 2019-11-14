@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
     android:backgroundTint="@android:color/background_light"
+    android:animateLayoutChanges="true"
     tools:context=".mainActivity.fragment.Camera">
 
 
@@ -34,6 +35,7 @@
         </io.fotoapparat.view.CameraView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/to_hide"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
