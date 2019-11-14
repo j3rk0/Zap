@@ -56,7 +56,7 @@ import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class QrScanner extends Fragment {
+public class Camera extends Fragment {
 
     private Fotoapparat fotoapparat;
     private Context context;
@@ -69,8 +69,8 @@ public class QrScanner extends Fragment {
     private DataSnapshot ds=null;
 
 
-    public static QrScanner newInstance() {
-        QrScanner fragment = new QrScanner();
+    public static Camera newInstance() {
+        Camera fragment = new Camera();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

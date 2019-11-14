@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
     android:backgroundTint="@android:color/background_light"
-    tools:context=".mainActivity.fragment.QrScanner">
+    tools:context=".mainActivity.fragment.Camera">
 
 
     <androidx.cardview.widget.CardView

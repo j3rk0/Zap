@@ -5,7 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.ricca.zap.mainActivity.fragment.QrScanner;
+import com.example.ricca.zap.mainActivity.fragment.Camera;
 import com.example.ricca.zap.mainActivity.fragment.Bookmarks;
 import com.example.ricca.zap.mainActivity.fragment.History;
 
@@ -28,7 +28,7 @@ public class HomePager extends FragmentPagerAdapter {
             case 0:
                 return History.newInstance();
             case 1:
-                return QrScanner.newInstance();
+                return Camera.newInstance();
             default:
                 return Bookmarks.newInstance();
 
