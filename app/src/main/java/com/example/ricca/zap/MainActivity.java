@@ -41,15 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         indicator.setViewPager( vpPager);
         vpPager.setCurrentItem(1);
-        askPermissions();
     }
-    @RequiresApi(api = Build.VERSION_CODES.M)
-    private void askPermissions()  ////////////chiede permessi
-    {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)!= PackageManager.PERMISSION_GRANTED)
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.CAMERA},2);
-        if (!(checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
-    }
+
 }
 

@@ -186,7 +186,7 @@ public class Camera extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View v = inflater.inflate(R.layout.fragment_scanner, container, false);
+        View v = inflater.inflate(R.layout.fragment_camera, container, false);
 
         //fa partire l'animazione
         ((PulsatorLayout)v.findViewById(R.id.pulsator)).start();

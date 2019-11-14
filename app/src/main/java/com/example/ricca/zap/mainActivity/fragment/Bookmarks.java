@@ -26,7 +26,7 @@ public class Bookmarks extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-       // adapter.notifyDataSetChanged();
+        if(adapter!=null) adapter.notifyDataSetChanged();
     }
 
     public void onCreate(Bundle savedInstanceState) {
