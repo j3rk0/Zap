@@ -36,6 +36,7 @@ import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -51,6 +52,7 @@ public class ArtWorkActivity extends AppCompatActivity
     private ProgressDialog loading = null;
     private TextView title=null;
     private CircularImageView miniatura=null;
+    private ArrayList<MediaPlayer> players=null;
 
     //////////////////////////////////////////////////////////////////////////////////////////
     private String nome;
@@ -189,6 +191,7 @@ public class ArtWorkActivity extends AppCompatActivity
     private void streamingMusic(final SeekBar bar, final Button playPause, String url) {
         final MediaPlayer player = new MediaPlayer();                 //inizializza nuovo player
         player.setAudioStreamType(AudioManager.STREAM_MUSIC);       //impostalo
+        players.add(player);
 
         try {
             player.setDataSource(url);
@@ -282,6 +285,8 @@ public class ArtWorkActivity extends AppCompatActivity
         title= findViewById(R.id.artwork_title);
         miniatura=findViewById(R.id.icon);
 
+        players=new ArrayList<>();
+
         Intent intent = getIntent();
         final String opera = intent.getStringExtra(EXTRA_MESSAGE); //prende in input la stringa riferimento dell'opera
 
@@ -328,5 +333,19 @@ public class ArtWorkActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        for(MediaPlayer i:players)
+            i.stop();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        for(MediaPlayer i:players)
+            i.stop();
     }
 }
