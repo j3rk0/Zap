@@ -4,8 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/background_light"
-    android:backgroundTint="@android:color/background_light"
     android:animateLayoutChanges="true"
     tools:context=".mainActivity.fragment.Camera">
 
@@ -46,7 +44,7 @@
                 android:elevation="4dp"
                 android:shadowColor="#000000"
                 android:shadowRadius="8"
-                android:text="Clicca per attvare la camera"
+                android:text="Clicca per attivare la camera"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
                 android:textSize="20dp"

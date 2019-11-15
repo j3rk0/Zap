@@ -165,7 +165,7 @@ public class Camera extends Fragment {
                         }
                     });
             //fa partire l'animazione
-            ((PulsatorLayout)getView().findViewById(R.id.pulsator)).start();
+            ((PulsatorLayout) Objects.requireNonNull(getView()).findViewById(R.id.pulsator)).start();
             //attiva camera
             isActive=false;
         }

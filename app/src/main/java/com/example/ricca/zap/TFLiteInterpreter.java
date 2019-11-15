@@ -41,8 +41,9 @@ public class TFLiteInterpreter
     private static final String LABELS_NAME="labels.txt";
     private static final int DIM_BATCH_SIZE=1;
     private static final int NUM_PIXEL_CHANNEL=3;
-    private static final int IMG_SIZE=224;
-    private int LABEL_NUM=0;
+    private static final int IMG_SIZE_X=224;
+    private static final int IMG_SIZE_Y=224;
+    private int LABELS_NUM=0;
 
     private FirebaseModelInterpreter interpreter;
     private FirebaseModelInputOutputOptions model_options;
@@ -52,23 +53,25 @@ public class TFLiteInterpreter
     public TFLiteInterpreter(Activity context)
     {
         this.context = context;
+
+        //inizializza il modello
         FirebaseCustomRemoteModel remoteModel=configureHostedModelSource();
         FirebaseCustomLocalModel localModel=configureLocalModelSource();
         startModelDownloadTask(remoteModel);
-        createInterpreter(remoteModel,localModel);
-        model_options=createInputOutputOptions();
 
         //conta il numero di label
-        try {
-            BufferedReader br = new BufferedReader(
-                    new InputStreamReader(context.getAssets().open(LABELS_NAME)));
-            while (br.readLine() !=null)LABEL_NUM++;
+        try
+        {
+            BufferedReader br = new BufferedReader(new InputStreamReader(context.getAssets().open(LABELS_NAME)));
+            while (br.readLine() !=null)LABELS_NUM++;
         } catch (IOException e)
         {
             e.printStackTrace();
         }
 
-
+        //crea interpreter e configura l'i/o
+        createInterpreter(remoteModel,localModel);
+        model_options=createInputOutputOptions();
     }
 
     private FirebaseCustomRemoteModel configureHostedModelSource()
@@ -135,8 +138,8 @@ public class TFLiteInterpreter
         try
         {
             return new FirebaseModelInputOutputOptions.Builder()
-                            .setInputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 224, 224, 3})
-                            .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{1, 5})
+                            .setInputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{DIM_BATCH_SIZE, IMG_SIZE_X, IMG_SIZE_Y, NUM_PIXEL_CHANNEL})
+                            .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{DIM_BATCH_SIZE, LABELS_NUM})
                             .build();
 
         } catch (FirebaseMLException e)
@@ -146,68 +149,69 @@ public class TFLiteInterpreter
         }
     }
 
-    private float[][][][] bitmapToInputArray(Bitmap bitmap) {
-        // [START mlkit_bitmap_input]
-        bitmap = Bitmap.createScaledBitmap(bitmap, 224, 224, false);
+    private float[][][][] bitmapToInputArray(Bitmap bitmap)
+    {
+        // converte l'immagine in un array
+        bitmap = Bitmap.createScaledBitmap(bitmap, IMG_SIZE_X, IMG_SIZE_Y, false);
 
         int batchNum = 0;
-        float[][][][] input = new float[1][224][224][3];
-        for (int x = 0; x < 224; x++) {
-            for (int y = 0; y < 224; y++) {
+        float[][][][] input = new float[DIM_BATCH_SIZE][IMG_SIZE_X][IMG_SIZE_Y][NUM_PIXEL_CHANNEL];
+        for (int x = 0; x < IMG_SIZE_X; x++)
+        {
+            for (int y = 0; y < IMG_SIZE_Y; y++)
+            {
+                // Normalize channel values to [-1.0, 1.0]
                 int pixel = bitmap.getPixel(x, y);
-                // Normalize channel values to [-1.0, 1.0]. This requirement varies by
-                // model. For example, some models might require values to be normalized
-                // to the range [0.0, 1.0] instead.
                 input[batchNum][x][y][0] = (Color.red(pixel) - 127) / 128.0f;
                 input[batchNum][x][y][1] = (Color.green(pixel) - 127) / 128.0f;
                 input[batchNum][x][y][2] = (Color.blue(pixel) - 127) / 128.0f;
             }
         }
-        // [END mlkit_bitmap_input]
-
         return input;
     }
 
-    public void runInference(Bitmap bitmap) {
+    public void runInference(Bitmap bitmap)
+    {
 
         float[][][][] input = bitmapToInputArray(bitmap);
 
-        // [START mlkit_run_inference]
+        // inizia l'inferenza
         FirebaseModelInputs inputs = null;
-        try {
+        try
+        {
             inputs = new FirebaseModelInputs.Builder()
-                    .add(input)  // add() as many input arrays as your model requires
+                    .add(input)  // aggiunge l'input
                     .build();
-        } catch (FirebaseMLException e) {
+        } catch (FirebaseMLException e)
+        {
             Log.e(TAG, Objects.requireNonNull(e.getMessage()));
         }
         interpreter.run(Objects.requireNonNull(inputs), model_options)
                 .addOnSuccessListener(
-                        new OnSuccessListener<FirebaseModelOutputs>() {
+                        new OnSuccessListener<FirebaseModelOutputs>()
+                        {
                             @Override
-                            public void onSuccess(FirebaseModelOutputs result) {
-                                // [START_EXCLUDE]
-                                // [START mlkit_read_result]
+                            public void onSuccess(FirebaseModelOutputs result)
+                            {
+                                //in caso di successo legge i risultati
                                 float[][] output = result.getOutput(0);
                                 probabilities = output[0];
-                                // [END mlkit_read_result]
-                                // [END_EXCLUDE]
                             }
                         })
                 .addOnFailureListener(
-                        new OnFailureListener() {
+                        new OnFailureListener()
+                        {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
+                            public void onFailure(@NonNull Exception e)
+                            {
                                 Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-                                // Task failed with an exception
                             }
                         });
-        // [END mlkit_run_inference]
     }
 
-    public List<InferenceResult> getResult() {
-        // [START mlkit_use_inference_result]
-
+    public List<InferenceResult> getResult()
+    {
+        // elabora il risultato
         try
         {
             List<InferenceResult> inferenceResult =new ArrayList<>();
@@ -215,25 +219,20 @@ public class TFLiteInterpreter
                 new InputStreamReader(context.getAssets().open(LABELS_NAME)));
             for (float probability : probabilities)
             {
+                //per ogni elemento dell'output aggiunge un risultato alla lista
                 String label=reader.readLine();
                 Objects.requireNonNull(inferenceResult).add(new InferenceResult(label, probability));
-                Log.i("MLKit", String.format("%s: %1.4f", label, probability));
-
             }
 
+            //ordina la lista
             Collections.sort(inferenceResult);
             return inferenceResult;
-        } catch (IOException e)
+
+        } catch (Exception e)
         {
             Log.e(TAG, Objects.requireNonNull(e.getMessage()));
             return null;
-        }catch (NullPointerException e)
-        {
-            Log.e(TAG,"inference stilll running");
-            return null;
         }
-
-        // [END mlkit_use_inference_result]
     }
 }
 

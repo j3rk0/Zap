@@ -1,15 +1,10 @@
 package com.example.ricca.zap.DAO;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
-import org.tensorflow.Session;
-
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -92,7 +87,7 @@ public class ListaElementi {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Calendar time=Calendar.getInstance();
+
                 FileOutputStream fos = null;
                 try
                 {

@@ -23,7 +23,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         aaptOptions {
-            noCompress "lite"  // Your model's file extension: "tflite", "lite", etc.
+            noCompress "lite"
         }
 
     }
@@ -40,7 +40,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.1.0'
     implementation 'com.google.firebase:firebase-database:19.2.0'
     implementation 'com.firebaseui:firebase-ui-storage:0.6.0'
-    implementation 'com.google.firebase:firebase-core:17.2.0'
+    implementation 'com.google.firebase:firebase-core:17.2.1'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
@@ -53,11 +53,8 @@ dependencies {
     implementation 'com.orhanobut:dialogplus:1.11@aar'
     implementation 'com.mikhaellopez:circularimageview:4.0.2'
     implementation 'io.github.silvaren:easyrs:0.5.3'
-    implementation 'org.tensorflow:tensorflow-android:1.13.1'
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
-    implementation "com.github.nikartm:fit-button:1.2.1"
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
-    implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
     implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.1'
 }
 
