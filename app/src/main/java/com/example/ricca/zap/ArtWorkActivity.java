@@ -335,6 +335,9 @@ public class ArtWorkActivity extends AppCompatActivity
         });
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    //quando si cambia activity la musica si ferma
+
     @Override
     protected void onPause() {
         super.onPause();
