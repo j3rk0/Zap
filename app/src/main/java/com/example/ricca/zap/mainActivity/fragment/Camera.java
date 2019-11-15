@@ -24,9 +24,9 @@ import androidx.renderscript.RenderScript;
 
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.ArtWorkActivity;
+import com.example.ricca.zap.DAO.InferenceResult;
 import com.example.ricca.zap.R;
-import com.example.ricca.zap.TFMobile.Classifier;
-import com.example.ricca.zap.TFMobile.TensorFlowImageClassifier;
+import com.example.ricca.zap.TFLiteInterpreter;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,7 +40,6 @@ import com.orhanobut.dialogplus.ViewHolder;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,8 +61,8 @@ public class Camera extends Fragment {
     private Context context;
     private Activity activity;
     private DialogPlus currDialog=null;
-    private Classifier classifier=null;
-    private List<Classifier.Recognition> results;
+    private TFLiteInterpreter classifier=null;
+    private List<InferenceResult> inferenceResults;
     private boolean isFounded=false;
     private boolean isActive=false;
     private DataSnapshot ds=null;
@@ -210,17 +209,11 @@ public class Camera extends Fragment {
 
         //creazione classificatore
         final RenderScript rs=RenderScript.create(context);
-        try {
-            classifier= TensorFlowImageClassifier.create(context.getAssets(),
-                    "file:///android_asset/graph.pb",
-                    "file:///android_asset/labels.txt",
-                    224,224,128,128f,
-                    "input","final_result");
-        } catch (IOException e) {
-            Log.e("Main Activity", Objects.requireNonNull(e.getMessage()));
-        }
+        classifier= new TFLiteInterpreter(this.activity);
 
 
+
+        to_hide=v.findViewById(R.id.to_hide);
 
         //quando si preme il bottone attiva la camera e lo nasconde con un fade
         v.findViewById(R.id.activeCamera).setOnClickListener(new View.OnClickListener() {
@@ -236,7 +229,7 @@ public class Camera extends Fragment {
                             @Override
                             public void onAnimationEnd(Animator animation) {
                                 super.onAnimationEnd(animation);
-                                v.findViewById(R.id.to_hide).setVisibility(View.GONE);
+                                to_hide.setVisibility(View.GONE);
                             }
                         });
             }
@@ -256,15 +249,16 @@ public class Camera extends Fragment {
                     {
                         if(isActive && !isFounded && ds!=null) {//se non è già stato trovato un possibile risultato
                             //analizzo il frame
-                            results = classifier.recognizeImage(Nv21Image.nv21ToBitmap(rs, frame.getImage(), frame.getSize().width, frame.getSize().height));
+                            classifier.runInference(Nv21Image.nv21ToBitmap(rs, frame.getImage(), frame.getSize().width, frame.getSize().height));
+                            inferenceResults = classifier.getResult();
 
                             if( //se il risultato:
-                                    results!=null && //non è null
-                                    results.size()>0 && // ha almeno una voce
-                                    results.get(0).getConfidence()>0.8 && // la precisione è sopra l'80%
-                                    ds.hasChild(Objects.requireNonNull(results.get(0).getTitle())) //esiste nel db
+                                    inferenceResults !=null && //non è null
+                                    inferenceResults.size()>0 && // ha almeno una voce
+                                    inferenceResults.get(0).getConfidence()>0.8 && // la precisione è sopra l'80%
+                                    ds.hasChild(Objects.requireNonNull(inferenceResults.get(0).getTitle())) //esiste nel db
                             )
-                            showDialog(results.get(0).getTitle());//mostra il dialog
+                            showDialog(inferenceResults.get(0).getTitle());//mostra il dialog
 
                         }
                     }

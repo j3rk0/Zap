@@ -22,6 +22,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        aaptOptions {
+            noCompress "lite"  // Your model's file extension: "tflite", "lite", etc.
+        }
+
     }
 
 
@@ -54,6 +58,7 @@ dependencies {
     implementation "com.github.nikartm:fit-button:1.2.1"
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.gauravbhola.ripplepulsebackground:library:1.0.0'
+    implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.1'
 }
 
 apply plugin: 'com.google.gms.google-services'
