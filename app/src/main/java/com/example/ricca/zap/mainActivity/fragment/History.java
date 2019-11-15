@@ -13,8 +13,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.ricca.zap.R;
 import com.example.ricca.zap.mainActivity.fragment.adapter.HistoryAdapter;
-public
-class History extends Fragment {
+
+public class History extends Fragment {
 
     private BaseAdapter adapter;
     public static History newInstance() {
@@ -24,11 +24,6 @@ class History extends Fragment {
         return fragment;
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if(adapter!=null) adapter.notifyDataSetChanged();
-    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

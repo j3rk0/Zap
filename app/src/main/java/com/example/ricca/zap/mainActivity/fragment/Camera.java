@@ -17,8 +17,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.renderscript.RenderScript;
 
@@ -115,15 +113,11 @@ public class Camera extends Fragment {
         copertina.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //anima il cambio di activity con una transizione
-                ActivityOptionsCompat transition= ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
-                Pair.create((View)copertina,"miniatura"),
-                Pair.create((View)titolo,"titolo"));
 
                 //passa ad artworkactivity il riferimento all'opera
                 Intent start=new Intent(context, ArtWorkActivity.class);
                 start.putExtra(EXTRA_MESSAGE,ref);
-                startActivity(start,transition.toBundle());
+                startActivity(start);
             }
         });
 
