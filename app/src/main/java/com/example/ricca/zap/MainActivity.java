@@ -7,7 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.ricca.zap.mainActivity.HomePager;
+import com.example.ricca.zap.GUI.HomePager;
+import com.example.ricca.zap.Services.ConnectionListener;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 
@@ -15,11 +16,14 @@ public class MainActivity extends AppCompatActivity {
 
     FragmentPagerAdapter adapterViewPager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        (new ConnectionListener(this)).start();
 
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;  //disabilita status bar
@@ -36,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         indicator.setViewPager( vpPager);
         vpPager.setCurrentItem(1);
     }
+
+
 
 }
 

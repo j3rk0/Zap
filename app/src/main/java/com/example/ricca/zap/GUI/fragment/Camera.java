@@ -1,4 +1,4 @@
-package com.example.ricca.zap.mainActivity.fragment;
+package com.example.ricca.zap.GUI.fragment;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -22,9 +22,9 @@ import androidx.renderscript.RenderScript;
 
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.ArtWorkActivity;
-import com.example.ricca.zap.DAO.InferenceResult;
+import com.example.ricca.zap.Data.InferenceResult;
 import com.example.ricca.zap.R;
-import com.example.ricca.zap.TFLiteInterpreter;
+import com.example.ricca.zap.Services.TFLiteInterpreter;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

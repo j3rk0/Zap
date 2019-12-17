@@ -1,4 +1,4 @@
-package com.example.ricca.zap.DAO;
+package com.example.ricca.zap.Data;
 
 import android.content.Context;
 import android.widget.Toast;

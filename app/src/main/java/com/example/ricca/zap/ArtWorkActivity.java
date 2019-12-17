@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -23,8 +25,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import com.example.ricca.zap.DAO.Contenuto;
-import com.example.ricca.zap.DAO.ListaElementi;
+import com.example.ricca.zap.Data.Contenuto;
+import com.example.ricca.zap.Data.ListaElementi;
+import com.example.ricca.zap.Services.ConnectionListener;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +37,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +54,7 @@ public class ArtWorkActivity extends AppCompatActivity
     private FirebaseStorage riferimentoS = null;   //riferimento allo storage
     private FirebaseDatabase riferimentoDB = null; //riferimento al real time database
     private LinearLayout wall = null;
-    private ProgressDialog loading = null;
+    private DialogPlus loading = null;
     private TextView title=null;
     private CircularImageView miniatura=null;
     private ArrayList<MediaPlayer> players=null;
@@ -63,8 +68,13 @@ public class ArtWorkActivity extends AppCompatActivity
 
     //////////////////////////////////////////////////////////////////////////////////////////
     public void fillWall(final String opera) {
-        loading = ProgressDialog.show(ArtWorkActivity.this, "",
-                "Loading Content, Please Wait", true);
+
+        final ViewHolder holder=new ViewHolder(R.layout.sample_loading);
+        loading=DialogPlus.newDialog(context) //crea dialog
+                .setGravity(Gravity.CENTER)
+                .setCancelable(false)
+                .setContentHolder(holder)
+                .create();
 
                 riferimentoDB.getReference().child(opera).addListenerForSingleValueEvent
                         (
@@ -79,7 +89,14 @@ public class ArtWorkActivity extends AppCompatActivity
                                         TextView temptext;
                                         View tempview;
 
+                                        int tot= (int) dataSnapshot.getChildrenCount()-2;
+                                        int curr=0;
+                                        ProgressBar progress=holder.getInflatedView().findViewById(R.id.progressBar2);
+                                        progress.setMax(tot);
+
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            progress.setProgress(curr);
+                                            curr++;
 
                                             if(Objects.equals(ds.getKey(), "nome"))
                                             {
@@ -278,7 +295,7 @@ public class ArtWorkActivity extends AppCompatActivity
             }
         });
 
-
+        (new ConnectionListener(this)).start();
         riferimentoS = FirebaseStorage.getInstance();         //inizializza riferimenti
         riferimentoDB = FirebaseDatabase.getInstance();
         wall = findViewById(R.id.bacheca);

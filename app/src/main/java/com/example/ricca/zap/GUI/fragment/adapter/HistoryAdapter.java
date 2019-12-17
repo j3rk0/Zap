@@ -1,4 +1,4 @@
-package com.example.ricca.zap.mainActivity.fragment.adapter;
+package com.example.ricca.zap.GUI.fragment.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,25 +11,27 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.ArtWorkActivity;
-import com.example.ricca.zap.DAO.Elemento;
-import com.example.ricca.zap.DAO.ListaElementi;
+import com.example.ricca.zap.Data.Elemento;
+import com.example.ricca.zap.Data.ListaElementi;
 import com.example.ricca.zap.R;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class BookmarksAdapter extends BaseAdapter {
+public class HistoryAdapter extends BaseAdapter {
 
     private ListaElementi list;
     private Context context;
     private ListView lista_gestita;
 
-    public BookmarksAdapter(Context context,ListView lista_gestita)
+
+    public HistoryAdapter(Context context,ListView lista_gestita)
     {
         this.context=context;
-        this.list = new ListaElementi(context,"preferiti.txt");
+        this.list = new ListaElementi(context,"cronologia.txt");
         this.lista_gestita=lista_gestita;
     }
+
 
     @Override
     public int getCount() {
@@ -37,34 +39,36 @@ public class BookmarksAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return list.get(position);
+    public Object getItem(int i) { return list.get(i); }
+
+    @Override
+    public long getItemId(int i) {
+        return getItem(i).hashCode();
     }
 
     @Override
-    public long getItemId(int position) {
-        return getItem(position).hashCode();
-    }
+    public View getView(final int i, View view, ViewGroup viewGroup) {
 
-    @Override
-    public View getView(final int position, View view, ViewGroup parent) {
-        if(view==null)
+        if (view==null)
         {
-            view= LayoutInflater.from(context).inflate(R.layout.sample_lista,null);
+            view= LayoutInflater.from(context).inflate(R.layout.sample_lista, null);
         }
-        final Elemento temp=(Elemento)getItem(position);
+
+        final Elemento temp = (Elemento) getItem(i);
+
+
         ((TextView)view.findViewById(R.id.nome)).setText(temp.getNome());
         ((TextView)view.findViewById(R.id.desc)).setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit sed.");
         Glide.with(this.context).load(temp.getMiniatura()).into((CircularImageView)view.findViewById(R.id.copertina));
         view.findViewById(R.id.remove_button).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                list.remove(position);
+                list.remove(i);
                 if(lista_gestita!=null)
-                    lista_gestita.invalidateViews();
+                lista_gestita.invalidateViews();
             }
         });
-        view.findViewById(R.id.copertina).setOnClickListener(new View.OnClickListener() {
+        view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent start=new Intent(context, ArtWorkActivity.class);
@@ -72,6 +76,7 @@ public class BookmarksAdapter extends BaseAdapter {
                 context.startActivity(start);
             }
         });
+
         return view;
     }
 }

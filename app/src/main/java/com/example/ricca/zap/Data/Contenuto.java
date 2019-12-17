@@ -1,4 +1,4 @@
-package com.example.ricca.zap.DAO;
+package com.example.ricca.zap.Data;
 
 public class Contenuto
 {

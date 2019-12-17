@@ -1,13 +1,13 @@
-package com.example.ricca.zap.mainActivity;
+package com.example.ricca.zap.GUI;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.ricca.zap.mainActivity.fragment.Camera;
-import com.example.ricca.zap.mainActivity.fragment.Bookmarks;
-import com.example.ricca.zap.mainActivity.fragment.History;
+import com.example.ricca.zap.GUI.fragment.Camera;
+import com.example.ricca.zap.GUI.fragment.Bookmarks;
+import com.example.ricca.zap.GUI.fragment.History;
 
 public class HomePager extends FragmentPagerAdapter {
 

@@ -1,5 +1,4 @@
-package com.example.ricca.zap;
-
+package com.example.ricca.zap.Services;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -8,7 +7,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.ricca.zap.DAO.InferenceResult;
+import com.example.ricca.zap.Data.InferenceResult;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,6 +34,7 @@ import java.util.Objects;
 
 public class TFLiteInterpreter
 {
+    //model settings
     private static final String TAG="TFLiteInterpreter";
     private static final String REMOTE_MODEL_NAME="model";
     private static final String LOCAL_MODEL_NAME="graph.lite";
@@ -130,7 +130,6 @@ public class TFLiteInterpreter
                     }
                 });
     }
-
 
     private FirebaseModelInputOutputOptions createInputOutputOptions()
     {
@@ -235,4 +234,3 @@ public class TFLiteInterpreter
         }
     }
 }
-

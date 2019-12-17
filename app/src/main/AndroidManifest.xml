@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera2" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
@@ -35,7 +35,7 @@
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="label,barcode" />
 
-        <activity android:name=".mainActivity.fragment.Camera" />
+        <activity android:name=".GUI.fragment.Camera" />
     </application>
 
 </manifest>
