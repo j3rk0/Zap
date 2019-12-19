@@ -15,7 +15,7 @@ public class ConnectionListener
     private Activity context;
     private boolean connected;
     private DialogPlus connectionDialog;
-
+    private ConnectivityManager connectivityManager;
     public ConnectionListener(Activity context)
     {
         this.context=context;
@@ -25,6 +25,7 @@ public class ConnectionListener
                 .setCancelable(false)
                 .setContentHolder(new ViewHolder(R.layout.dialog_connecting))
                 .create();
+        connectivityManager= (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
     }
 
@@ -59,9 +60,6 @@ public class ConnectionListener
 
     private boolean isNetworkAvailable()
     {  //controlla se la connessione è presente
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        assert connectivityManager != null;
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        (new ConnectionListener(this)).start();
+        (new ConnectionListener(this)).start();  //crea un monitor per la connessione
 
         View decorView = getWindow().getDecorView();
         int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;  //disabilita status bar
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         DotsIndicator indicator=findViewById(R.id.dots_indicator);
 
         ViewPager vpPager = findViewById(R.id.pager);
-        adapterViewPager = new HomePager(getSupportFragmentManager());
+        adapterViewPager = new HomePager(getSupportFragmentManager()); //setta il pager
         vpPager.setAdapter(adapterViewPager);
 
 

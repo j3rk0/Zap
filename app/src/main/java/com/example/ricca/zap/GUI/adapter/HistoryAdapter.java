@@ -1,6 +1,8 @@
 package com.example.ricca.zap.GUI.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,9 +65,19 @@ public class HistoryAdapter extends BaseAdapter {
         view.findViewById(R.id.remove_button).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                list.remove(i);
-                if(lista_gestita!=null)
-                lista_gestita.invalidateViews();
+                new AlertDialog.Builder(context)
+                        .setTitle("elimina cronologia")
+                        .setMessage("Sicuro di voler eliminare?")
+                        .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                list.remove(i);
+                                if(lista_gestita!=null)
+                                    lista_gestita.invalidateViews();
+                            }
+                        })
+                        .setNegativeButton("NO",null).create().show();
+
             }
         });
         view.setOnClickListener(new View.OnClickListener() {

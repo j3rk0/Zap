@@ -68,8 +68,9 @@ public class ArtWorkActivity extends AppCompatActivity
     //////////////////////////////////////////////////////////////////////////////////////////
     public void fillWall(final String opera) {
 
+        //crea dialog di caricamento
         final ViewHolder holder=new ViewHolder(R.layout.dialog_loading);
-        loading=DialogPlus.newDialog(context) //crea dialog
+        loading=DialogPlus.newDialog(context)
                 .setGravity(Gravity.CENTER)
                 .setCancelable(false)
                 .setContentHolder(holder)
@@ -81,6 +82,7 @@ public class ArtWorkActivity extends AppCompatActivity
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                                        loading.show();//mostra dialog caricamento
 
                                         Vector contenuti = new Vector();
                                         int i = 0;
@@ -94,6 +96,7 @@ public class ArtWorkActivity extends AppCompatActivity
                                         progress.setMax(tot);
 
                                         for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                                            //aggiorna barra caricamento
                                             progress.setProgress(curr);
                                             curr++;
 
@@ -294,7 +297,7 @@ public class ArtWorkActivity extends AppCompatActivity
             }
         });
 
-        (new ConnectionListener(this)).start();
+        (new ConnectionListener(this)).start();//CREA  MONITOR CONNESSIONE
         riferimentoS = FirebaseStorage.getInstance();         //inizializza riferimenti
         riferimentoDB = FirebaseDatabase.getInstance();
         wall = findViewById(R.id.bacheca);
@@ -309,15 +312,14 @@ public class ArtWorkActivity extends AppCompatActivity
         cronologia = new ListaOpere(context.getApplicationContext(),"cronologia.txt");
         fillWall(opera);      //crea pagina
 
+
+        //PREFERITI
         preferiti = new ListaOpere(this,"preferiti.txt");
-        //SETTA IMAGINE BOTTONE PREFERITI
-
-
         final ImageButton bookmark=findViewById(R.id.bookmark_artwork);
-
         new Thread(new Runnable() {
             @Override
             public void run() {
+                //aspetta finchè non si carica la lista dei preferiti
                 while(!preferiti.isLoaded()) {
                     try {
                         Thread.sleep(1);
@@ -325,11 +327,11 @@ public class ArtWorkActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
                 }
+                //setta stato bottone preferiti
                 if(preferiti.isPresent(opera)) bookmark.setImageResource(R.drawable.ic_bookmark_white_36dp);
                 else bookmark.setImageResource(R.drawable.ic_bookmark_border_white_36dp);
             }
         }).start();
-
 
 
 

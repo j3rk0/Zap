@@ -1,6 +1,8 @@
 package com.example.ricca.zap.GUI.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,12 +58,22 @@ public class BookmarksAdapter extends BaseAdapter {
         ((TextView)view.findViewById(R.id.nome)).setText(temp.getNome());
         ((TextView)view.findViewById(R.id.desc)).setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit sed.");
         Glide.with(this.context).load(temp.getMiniatura()).into((CircularImageView)view.findViewById(R.id.copertina));
+
+
         view.findViewById(R.id.remove_button).setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
-                list.remove(position);
-                if(lista_gestita!=null)
-                    lista_gestita.invalidateViews();
+                new AlertDialog.Builder(context)
+                        .setTitle("elimina segnalibro")
+                        .setMessage("Sicuro di voler eliminare?")
+                        .setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                list.remove(position);
+                                if(lista_gestita!=null)
+                                    lista_gestita.invalidateViews();
+                            }
+                        })
+                        .setNegativeButton("NO",null).create().show();
             }
         });
         view.findViewById(R.id.copertina).setOnClickListener(new View.OnClickListener() {
