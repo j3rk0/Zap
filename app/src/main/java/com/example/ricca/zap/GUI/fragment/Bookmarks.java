@@ -10,7 +10,7 @@ import android.widget.ListView;
 import androidx.fragment.app.Fragment;
 
 import com.example.ricca.zap.R;
-import com.example.ricca.zap.GUI.fragment.adapter.BookmarksAdapter;
+import com.example.ricca.zap.GUI.adapter.BookmarksAdapter;
 
 public class Bookmarks extends Fragment {
 

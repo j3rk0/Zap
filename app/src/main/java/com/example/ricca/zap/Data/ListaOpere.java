@@ -12,9 +12,9 @@ import java.util.ArrayList;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class ListaElementi {
+public class ListaOpere {
 
-    private ArrayList<Elemento> listaelementi;
+    private ArrayList<Opera> listaopere;
     private String file;
     private Context context;
 
@@ -25,9 +25,9 @@ public class ListaElementi {
     private boolean loaded=false;
 
 
-    public ListaElementi(final Context context,final String file) {
+    public ListaOpere(final Context context, final String file) {
         this.context = context;
-        listaelementi=new ArrayList<>();
+        listaopere =new ArrayList<>();
         this.file=file;
 
         new Thread(new Runnable() {
@@ -52,7 +52,7 @@ public class ListaElementi {
                             miniatura = campo[2];
                             //spezzetti line
 
-                            listaelementi.add(new Elemento(nome, collegamento, miniatura));
+                            listaopere.add(new Opera(nome, collegamento, miniatura));
 
                         }
                     }
@@ -76,8 +76,8 @@ public class ListaElementi {
 
     public boolean isPresent(String collegamento)    {
 
-        for(int i=0; i< listaelementi.size();i++)
-            if(listaelementi.get(i).getCollegamento().equals(collegamento))return true;
+        for(int i = 0; i< listaopere.size(); i++)
+            if(listaopere.get(i).getCollegamento().equals(collegamento))return true;
         return false;
     }
 
@@ -93,7 +93,7 @@ public class ListaElementi {
                     fos = context.openFileOutput(file, MODE_PRIVATE);
                     String temp = "";
 
-                    for (Elemento A : listaelementi)
+                    for (Opera A : listaopere)
                     {
                         temp = temp.concat(A.getNome() + "@" + A.getCollegamento() + "@" + A.getMiniatura() + "\n");
                     }
@@ -116,11 +116,11 @@ public class ListaElementi {
 
     public void add(String nome, String collegamento, String miniatura) {
         loaded=false;
-        for(Elemento A:listaelementi){
+        for(Opera A: listaopere){
             if (A.getCollegamento().equals(collegamento))
                 return;
         }
-        listaelementi.add(new Elemento(nome, collegamento, miniatura));
+        listaopere.add(new Opera(nome, collegamento, miniatura));
         updatefile();
         if(file.equals("preferiti.txt"))
             Toast.makeText(context,"Aggiunto "+nome+" ai preferiti",Toast.LENGTH_SHORT).show();
@@ -130,31 +130,31 @@ public class ListaElementi {
     public void remove(int i) {
 
         loaded=false;
-        listaelementi.remove(i);
+        listaopere.remove(i);
         updatefile();
         if(file.equals("preferiti.txt"))
-            Toast.makeText(context,"Elemento rimosso dai preferiti",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Opera rimosso dai preferiti",Toast.LENGTH_SHORT).show();
         loaded=true;
     }
 
     public void remove(String collegamento)
     {
         loaded=false;
-        for(int i=0;i<listaelementi.size();i++)
-            if(listaelementi.get(i).getCollegamento().equals(collegamento))
-                listaelementi.remove(i);
+        for(int i = 0; i< listaopere.size(); i++)
+            if(listaopere.get(i).getCollegamento().equals(collegamento))
+                listaopere.remove(i);
 
         updatefile();
         if(file.equals("preferiti.txt"))
-            Toast.makeText(context,"Elemento rimosso dai preferiti",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context,"Opera rimosso dai preferiti",Toast.LENGTH_SHORT).show();
         loaded=true;
     }
 
-    public  Elemento get(int i) {
-        return listaelementi.get(i);
+    public Opera get(int i) {
+        return listaopere.get(i);
     }
 
     public int size() {
-        return listaelementi.size();
+        return listaopere.size();
     }
 }

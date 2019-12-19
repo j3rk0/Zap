@@ -81,7 +81,7 @@ public class Camera extends Fragment {
         isFounded=true;
 
         //creazione del dialog
-        ViewHolder holder=new ViewHolder(R.layout.sample_recognition);
+        ViewHolder holder=new ViewHolder(R.layout.dialog_recognition);
         final DialogPlus dialog= DialogPlus.newDialog(context)
                 .setGravity(Gravity.CENTER)
                 .setCancelable(true)

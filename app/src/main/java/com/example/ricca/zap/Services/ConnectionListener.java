@@ -23,7 +23,7 @@ public class ConnectionListener
         connectionDialog=DialogPlus.newDialog(context) //crea dialog
                 .setGravity(Gravity.CENTER)
                 .setCancelable(false)
-                .setContentHolder(new ViewHolder(R.layout.sample_connecting))
+                .setContentHolder(new ViewHolder(R.layout.dialog_connecting))
                 .create();
 
     }

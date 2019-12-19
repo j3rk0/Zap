@@ -1,6 +1,6 @@
 package com.example.ricca.zap.Data;
 
-public class Elemento {
+public class Opera {
     private String Nome;
     private String Collegamento;
 
@@ -10,7 +10,7 @@ public class Elemento {
 
     private String Miniatura;
 
-    Elemento(String nome, String collegamento, String miniatura) {
+    Opera(String nome, String collegamento, String miniatura) {
         Nome = nome;
         Collegamento = collegamento;
         Miniatura = miniatura;

@@ -1,6 +1,5 @@
 package com.example.ricca.zap;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -26,7 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.Data.Contenuto;
-import com.example.ricca.zap.Data.ListaElementi;
+import com.example.ricca.zap.Data.ListaOpere;
 import com.example.ricca.zap.Services.ConnectionListener;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -62,14 +61,14 @@ public class ArtWorkActivity extends AppCompatActivity
     //////////////////////////////////////////////////////////////////////////////////////////
     private String nome;
     private String link_miniatura;
-    ListaElementi cronologia;
-    ListaElementi preferiti;
+    ListaOpere cronologia;
+    ListaOpere preferiti;
 
 
     //////////////////////////////////////////////////////////////////////////////////////////
     public void fillWall(final String opera) {
 
-        final ViewHolder holder=new ViewHolder(R.layout.sample_loading);
+        final ViewHolder holder=new ViewHolder(R.layout.dialog_loading);
         loading=DialogPlus.newDialog(context) //crea dialog
                 .setGravity(Gravity.CENTER)
                 .setCancelable(false)
@@ -165,7 +164,7 @@ public class ArtWorkActivity extends AppCompatActivity
     //aggiunge un elemento brano alla pagina e richiama streamingmusic per inizializzarlo
 
     private void musicTask(final String riferimento, String titolo) {
-        final View vbrano = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.sample_vista_brano, null);
+        final View vbrano = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.vista_brano, null);
         wall.addView(vbrano);
         TextView temptext = vbrano.findViewById(R.id.titoloBrano);
         temptext.setText(titolo);
@@ -185,7 +184,7 @@ public class ArtWorkActivity extends AppCompatActivity
     //aggiunge un elemento immagine alla pagina e la inizializza
 
     private void imageTask(String riferimento, String titolo) {
-        View vfoto = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.sample_vista_foto, null);
+        View vfoto = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.vista_foto, null);
         wall.addView(vfoto);
         TextView temptext = vfoto.findViewById(R.id.titoloFoto);
         temptext.setText(titolo);
@@ -197,7 +196,7 @@ public class ArtWorkActivity extends AppCompatActivity
     //aggiunge un elemento testo alla pagina e lo restituisce
 
     private View addTesto() {
-        View vtesto = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.sample_vista_testo, null);
+        View vtesto = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.vista_testo, null);
         wall.addView(vtesto);
         return vtesto;
     }
@@ -307,10 +306,10 @@ public class ArtWorkActivity extends AppCompatActivity
         Intent intent = getIntent();
         final String opera = intent.getStringExtra(EXTRA_MESSAGE); //prende in input la stringa riferimento dell'opera
 
-        cronologia = new ListaElementi(context.getApplicationContext(),"cronologia.txt");
+        cronologia = new ListaOpere(context.getApplicationContext(),"cronologia.txt");
         fillWall(opera);      //crea pagina
 
-        preferiti = new ListaElementi(this,"preferiti.txt");
+        preferiti = new ListaOpere(this,"preferiti.txt");
         //SETTA IMAGINE BOTTONE PREFERITI
 
 

@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.ricca.zap.R;
-import com.example.ricca.zap.GUI.fragment.adapter.HistoryAdapter;
+import com.example.ricca.zap.GUI.adapter.HistoryAdapter;
 
 public class History extends Fragment {
 
