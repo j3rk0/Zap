@@ -16,6 +16,7 @@ public class ConnectionListener
     private boolean connected;
     private DialogPlus connectionDialog;
     private ConnectivityManager connectivityManager;
+
     public ConnectionListener(Activity context)
     {
         this.context=context;

@@ -249,7 +249,7 @@ public class Camera extends Fragment {
                             if( //se il risultato:
                                     inferenceResults !=null && //non è null
                                     inferenceResults.size()>0 && // ha almeno una voce
-                                    inferenceResults.get(0).getConfidence()>0.8 && // la precisione è sopra l'80%
+                                    inferenceResults.get(0).getConfidence()>0.95 && // la precisione è sopra il 95%
                                     ds.hasChild(Objects.requireNonNull(inferenceResults.get(0).getTitle())) //esiste nel db
                             )
                             showDialog(inferenceResults.get(0).getTitle());//mostra il dialog
