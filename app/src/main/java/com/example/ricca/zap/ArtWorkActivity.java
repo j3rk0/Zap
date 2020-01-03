@@ -26,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.Data.Contenuto;
 import com.example.ricca.zap.Data.ListaOpere;
+import com.example.ricca.zap.GUI.tutorial.HelpDialogManager;
 import com.example.ricca.zap.Services.ConnectionListener;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -57,6 +58,8 @@ public class ArtWorkActivity extends AppCompatActivity
     private TextView title=null;
     private CircularImageView miniatura=null;
     private ArrayList<MediaPlayer> players=null;
+
+    private HelpDialogManager help;
 
     //////////////////////////////////////////////////////////////////////////////////////////
     private String nome;
@@ -266,10 +269,10 @@ public class ArtWorkActivity extends AppCompatActivity
                         if (player.isPlaying()) {
                             player.pause();
                             barHandler.removeCallbacks(updateBar);
-                            playPause.setBackgroundResource(R.drawable.ic_play_circle_outline_black_36dp);
+                            playPause.setBackgroundResource(R.drawable.ic_play_circle_outline_black_48dp);
                         } else {
                             player.start();
-                            playPause.setBackgroundResource(R.drawable.ic_pause_circle_outline_black_36dp);
+                            playPause.setBackgroundResource(R.drawable.ic_pause_circle_outline_black_48dp);
                             barHandler.postDelayed(updateBar, 0);
                         }
                     }
@@ -351,6 +354,7 @@ public class ArtWorkActivity extends AppCompatActivity
                 }
             }
         });
+
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

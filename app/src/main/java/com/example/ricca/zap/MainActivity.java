@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.ricca.zap.GUI.tutorial.HelpDialogManager;
 import com.example.ricca.zap.GUI.HomePager;
 import com.example.ricca.zap.Services.ConnectionListener;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
@@ -15,7 +16,7 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 public class MainActivity extends AppCompatActivity {
 
     FragmentPagerAdapter adapterViewPager;
-
+    HelpDialogManager help;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,9 +40,15 @@ public class MainActivity extends AppCompatActivity {
 
         indicator.setViewPager( vpPager);
         vpPager.setCurrentItem(1);
+
+        help=new HelpDialogManager(this);
+        findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                help.showHelpDialog();
+            }
+        });
     }
-
-
 
 }
 

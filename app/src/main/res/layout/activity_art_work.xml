@@ -30,22 +30,24 @@
             android:layout_height="150dp"
             android:scaleType="centerInside"
             android:transitionName="miniatura"
-            app:layout_constraintBottom_toTopOf="@+id/artwork_title"
-            app:layout_constraintEnd_toStartOf="@+id/share_artwork"
-            app:layout_constraintStart_toEndOf="@+id/back_artwork"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.8"
             app:civ_shadow="true"
             app:civ_shadow_radius="10"
+            app:layout_constraintBottom_toTopOf="@+id/artwork_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.8"
             tools:srcCompat="@android:color/white" />
 
         <ImageButton
             android:id="@+id/bookmark_artwork"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:backgroundTint="#00FFFFFF"
             app:layout_constraintEnd_toStartOf="@+id/share_artwork"
+            app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bookmark_border_white_36dp" />
 
