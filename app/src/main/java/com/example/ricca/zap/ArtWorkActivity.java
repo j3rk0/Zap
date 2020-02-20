@@ -26,7 +26,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.Data.Contenuto;
 import com.example.ricca.zap.Data.ListaOpere;
-import com.example.ricca.zap.GUI.tutorial.HelpDialogManager;
 import com.example.ricca.zap.Services.ConnectionListener;
 import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,8 +41,8 @@ import com.orhanobut.dialogplus.ViewHolder;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Vector;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -58,8 +57,6 @@ public class ArtWorkActivity extends AppCompatActivity
     private TextView title=null;
     private CircularImageView miniatura=null;
     private ArrayList<MediaPlayer> players=null;
-
-    private HelpDialogManager help;
 
     //////////////////////////////////////////////////////////////////////////////////////////
     private String nome;
@@ -87,7 +84,7 @@ public class ArtWorkActivity extends AppCompatActivity
 
                                         loading.show();//mostra dialog caricamento
 
-                                        Vector contenuti = new Vector();
+                                        List contenuti = new ArrayList();
                                         int i = 0;
                                         Contenuto temp;
                                         TextView temptext;
