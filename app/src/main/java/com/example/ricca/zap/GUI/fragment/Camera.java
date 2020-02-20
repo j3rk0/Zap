@@ -203,7 +203,7 @@ public class Camera extends Fragment {
 
         //creazione classificatore
         final RenderScript rs=RenderScript.create(context);
-        classifier= new TFLiteInterpreter(this.activity);
+        classifier= new TFLiteInterpreter("music_museum","museums/music_museum/labels");
 
 
 
@@ -250,7 +250,8 @@ public class Camera extends Fragment {
                                     inferenceResults !=null && //non è null
                                     inferenceResults.size()>0 && // ha almeno una voce
                                     inferenceResults.get(0).getConfidence()>0.95 && // la precisione è sopra il 95%
-                                    ds.hasChild(Objects.requireNonNull(inferenceResults.get(0).getTitle())) //esiste nel db
+                                    ds.hasChild(Objects.requireNonNull(inferenceResults.get(0).getTitle())) && //esiste nel db
+                                    !inferenceResults.get(0).getTitle().equals("noise")
                             )
                             showDialog(inferenceResults.get(0).getTitle());//mostra il dialog
 

@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import com.example.ricca.zap.GUI.tutorial.HelpDialogManager;
 import com.example.ricca.zap.GUI.HomePager;
+import com.example.ricca.zap.GUI.tutorial.HelpDialogManager;
 import com.example.ricca.zap.Services.ConnectionListener;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 

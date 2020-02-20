@@ -1,7 +1,0 @@
-music museum/Animals
-music museum/Pink floyd The dark side of the moon
-music museum/The Division Bell
-music museum/Endless
-music museum/Parson
-music museum/The Wall
-noise
