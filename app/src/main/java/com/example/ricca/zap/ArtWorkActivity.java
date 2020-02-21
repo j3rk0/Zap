@@ -1,5 +1,6 @@
 package com.example.ricca.zap;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -84,7 +86,7 @@ public class ArtWorkActivity extends AppCompatActivity
 
                                         loading.show();//mostra dialog caricamento
 
-                                        List contenuti = new ArrayList();
+                                        List<Contenuto> contenuti = new ArrayList<>();
                                         int i = 0;
                                         Contenuto temp;
                                         TextView temptext;
@@ -124,7 +126,7 @@ public class ArtWorkActivity extends AppCompatActivity
                                         }
 
                                         for (i = 0; i < contenuti.size(); i++) {
-                                            temp = (Contenuto) contenuti.get(i);
+                                            temp = contenuti.get(i);
                                             switch (temp.getTipo()) {
                                                 case "foto":
                                                     imageTask(temp.getValore(), temp.getTitolo());
@@ -166,6 +168,7 @@ public class ArtWorkActivity extends AppCompatActivity
     ///////////////////////////////////////////////////////////////////////////////////////////
     //aggiunge un elemento brano alla pagina e richiama streamingmusic per inizializzarlo
 
+    @SuppressLint("InflateParams")
     private void musicTask(final String riferimento, String titolo) {
         final View vbrano = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.vista_brano, null);
         wall.addView(vbrano);
@@ -185,7 +188,7 @@ public class ArtWorkActivity extends AppCompatActivity
 
     ///////////////////////////////////////////////////////////////////////////////////////////
     //aggiunge un elemento immagine alla pagina e la inizializza
-
+    @SuppressLint("InflateParams")
     private void imageTask(String riferimento, String titolo) {
         View vfoto = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.vista_foto, null);
         wall.addView(vfoto);
@@ -198,6 +201,7 @@ public class ArtWorkActivity extends AppCompatActivity
     //////////////////////////////////////////////////////////////////////////////////////////
     //aggiunge un elemento testo alla pagina e lo restituisce
 
+    @SuppressLint("InflateParams")
     private View addTesto() {
         View vtesto = LayoutInflater.from(ArtWorkActivity.this).inflate(R.layout.vista_testo, null);
         wall.addView(vtesto);
@@ -241,9 +245,10 @@ public class ArtWorkActivity extends AppCompatActivity
                     player.prepare();
                     bar.setMax(player.getDuration());
                     bar.setProgress(0);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
+
 
                 bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() { //listener per la barra
                     @Override

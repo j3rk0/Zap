@@ -181,7 +181,8 @@ public class TFLiteInterpreter
                 for (float probability : probabilities) {
 
                     //per ogni elemento dell'output aggiunge un risultato alla lista
-                    Objects.requireNonNull(inferenceResult).add(new InferenceResult(labels.get(i), probability));
+                    Objects.requireNonNull(inferenceResult)
+                            .add(new InferenceResult(labels.get(i), probability));
                     i++;
 
                 }
