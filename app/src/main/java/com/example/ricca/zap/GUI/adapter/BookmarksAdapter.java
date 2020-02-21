@@ -1,5 +1,6 @@
 package com.example.ricca.zap.GUI.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,6 +49,7 @@ public class BookmarksAdapter extends BaseAdapter {
         return getItem(position).hashCode();
     }
 
+    @SuppressLint("InflateParams")
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         if(view==null)

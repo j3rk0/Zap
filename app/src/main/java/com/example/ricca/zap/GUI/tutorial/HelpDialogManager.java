@@ -1,14 +1,9 @@
 package com.example.ricca.zap.GUI.tutorial;
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,8 +14,6 @@ import com.example.ricca.zap.R;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
-
-import io.fotoapparat.parameter.Flash;
 
 public class HelpDialogManager {
     private DialogPlus dialog;
