@@ -50,55 +50,65 @@ public class TFLiteInterpreter
     public TFLiteInterpreter(String model_name, final String label_path)
     {
         //configura modello remoto
-        final FirebaseCustomRemoteModel remoteModel= new FirebaseCustomRemoteModel.Builder(model_name).build();
+        final FirebaseCustomRemoteModel remoteModel=
+                new FirebaseCustomRemoteModel.Builder(model_name).build();
 
-        // scarica il modello
-            FirebaseModelDownloadConditions conditions = new FirebaseModelDownloadConditions.Builder().build();
-            FirebaseModelManager.getInstance().download(remoteModel, conditions)
-                    .addOnCompleteListener(new OnCompleteListener<Void>()
+        //scarica il modello
+        FirebaseModelDownloadConditions conditions =
+                new FirebaseModelDownloadConditions.Builder().build();
+
+        FirebaseModelManager.getInstance().download(remoteModel, conditions)
+                .addOnCompleteListener(new OnCompleteListener<Void>()
+                {
+
+                    //quando è completo
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task)
                     {
-                        //quando è completo
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task)
+                        try
                         {
-                            try
-                            {
-                                //instanziate interpreter
-                                FirebaseModelInterpreterOptions options =
-                                        new FirebaseModelInterpreterOptions.Builder(remoteModel).build();
-                                interpreter = FirebaseModelInterpreter.getInstance(options);
+                            //instanziate interpreter
+                            FirebaseModelInterpreterOptions options =
+                                new FirebaseModelInterpreterOptions.Builder(remoteModel).build();
+                            interpreter = FirebaseModelInterpreter.getInstance(options);
 
-                                //configure label list
-                                FirebaseDatabase.getInstance().getReference(label_path).orderByKey()
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                                labels=new ArrayList<>();
-                                                for(DataSnapshot snapshot : dataSnapshot.getChildren())
-                                                {
-                                                    Log.v(TAG,"adding label: "+snapshot.getValue(String.class));
-                                                    //add labels
-                                                    labels.add(snapshot.getValue(String.class));
-                                                    LABELS_NUM++;
-                                                    //specifing input/output model options
-                                                    try {
-                                                        model_options= new FirebaseModelInputOutputOptions.Builder()
-                                                                .setInputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{DIM_BATCH_SIZE, IMG_SIZE_X, IMG_SIZE_Y, NUM_PIXEL_CHANNEL})
-                                                                .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{DIM_BATCH_SIZE, LABELS_NUM})
-                                                                .build();
-                                                    } catch (FirebaseMLException e) { Log.e(TAG, Objects.requireNonNull(e.getMessage()));}
-                                                }
-                                            }
+                            //configure label list
+                            FirebaseDatabase.getInstance().getReference(label_path).orderByKey()
+                                .addListenerForSingleValueEvent(new ValueEventListener()
+                                {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                                    {
+                                        labels=new ArrayList<>();
+                                        for(DataSnapshot snapshot : dataSnapshot.getChildren())
+                                        {
+                                            //add labels
+                                            labels.add(snapshot.getValue(String.class));
+                                            LABELS_NUM++;
+                                        }
 
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError databaseError) {}
-                                        });
+                                        try
+                                        {
+                                            //specifing input/output model options
+                                            model_options= new FirebaseModelInputOutputOptions.Builder()
+                                                .setInputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{DIM_BATCH_SIZE, IMG_SIZE_X, IMG_SIZE_Y, NUM_PIXEL_CHANNEL})
+                                                .setOutputFormat(0, FirebaseModelDataType.FLOAT32, new int[]{DIM_BATCH_SIZE, LABELS_NUM})
+                                                .build();
+
+                                        } catch (FirebaseMLException e)
+                                            { Log.e(TAG, Objects.requireNonNull(e.getMessage()));}
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {}
+                                });
 
 
-                            } catch (FirebaseMLException e) { Log.e(TAG, Objects.requireNonNull(e.getMessage())); }
+                        } catch (FirebaseMLException e)
+                            { Log.e(TAG, Objects.requireNonNull(e.getMessage())); }
 
-                        }
-                    });
+                    }
+                });
     }
 
 
@@ -135,10 +145,9 @@ public class TFLiteInterpreter
             inputs = new FirebaseModelInputs.Builder()
                     .add(input)  // aggiunge l'input
                     .build();
-        } catch (FirebaseMLException e)
-        {
-            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
-        }
+
+        } catch (FirebaseMLException e) {Log.e(TAG, Objects.requireNonNull(e.getMessage()));}
+
         interpreter.run(Objects.requireNonNull(inputs), model_options)
                 .addOnSuccessListener(
                         new OnSuccessListener<FirebaseModelOutputs>()
@@ -170,9 +179,11 @@ public class TFLiteInterpreter
             int i=0;
             try {
                 for (float probability : probabilities) {
+
                     //per ogni elemento dell'output aggiunge un risultato alla lista
                     Objects.requireNonNull(inferenceResult).add(new InferenceResult(labels.get(i), probability));
                     i++;
+
                 }
 
                 //ordina la lista
