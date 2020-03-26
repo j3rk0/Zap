@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.example.ricca.zap.GUI.fragment.Camera;
-import com.example.ricca.zap.GUI.fragment.Bookmarks;
-import com.example.ricca.zap.GUI.fragment.History;
+import com.example.ricca.zap.GUI.fragment.home.Bookmarks;
+import com.example.ricca.zap.GUI.fragment.home.History;
+import com.example.ricca.zap.GUI.fragment.home.Home;
 
 public class HomePager extends FragmentPagerAdapter {
 
@@ -28,7 +28,7 @@ public class HomePager extends FragmentPagerAdapter {
             case 0:
                 return History.newInstance();
             case 1:
-                return Camera.newInstance();
+                return Home.newInstance();
             default:
                 return Bookmarks.newInstance();
 
@@ -42,7 +42,7 @@ public class HomePager extends FragmentPagerAdapter {
             case 0:
                 return "History";
             case 1:
-                return "Zap!";
+                return "Home";
             default:
                 return "Bookmarks";
         }

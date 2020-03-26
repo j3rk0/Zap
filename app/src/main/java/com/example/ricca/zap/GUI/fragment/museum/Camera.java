@@ -1,4 +1,4 @@
-package com.example.ricca.zap.GUI.fragment;
+package com.example.ricca.zap.GUI.fragment.museum;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

@@ -13,7 +13,7 @@ import com.example.ricca.zap.Services.ConnectionListener;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
     FragmentPagerAdapter adapterViewPager;
     HelpDialogManager help;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         decorView.setSystemUiVisibility(uiOptions);
 
 
-        DotsIndicator indicator=findViewById(R.id.dots_indicator);
+        DotsIndicator indicator=findViewById(R.id.dots_indicator_home);
 
         ViewPager vpPager = findViewById(R.id.pager);
         adapterViewPager = new HomePager(getSupportFragmentManager()); //setta il pager

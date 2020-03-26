@@ -17,4 +17,7 @@
     <string name="find_a">Find a</string>
     <string name="and_choose_how_to_acquire_it">and choose how to acquire it</string>
     <string name="todo">TODO</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

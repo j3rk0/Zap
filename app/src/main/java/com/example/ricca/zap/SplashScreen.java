@@ -40,7 +40,7 @@ public class SplashScreen extends AppCompatActivity {
                             Thread.sleep(50);
                         }
                         Thread.sleep(500);
-                        SplashScreen.this.startActivity(new Intent(SplashScreen.this,MainActivity.class));
+                        SplashScreen.this.startActivity(new Intent(SplashScreen.this, HomeActivity.class));
                         SplashScreen.this.finish();
 
                 } catch (InterruptedException e)
