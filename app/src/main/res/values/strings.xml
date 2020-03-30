@@ -17,7 +17,19 @@
     <string name="find_a">Find a</string>
     <string name="and_choose_how_to_acquire_it">and choose how to acquire it</string>
     <string name="todo">TODO</string>
+    <string name="saved_museum"></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_label">Zap</string>
+    <string name="search_hint">Cerca museo</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="action_search">Cerca museo</string>
 </resources>

@@ -1,15 +1,20 @@
 package com.example.ricca.zap.Data;
 
+import android.text.TextUtils;
+
+import org.w3c.dom.Text;
+
 public class MuseoRef
 {
     private String nome;
     private String path;
 
+    public MuseoRef (){}
+
     public MuseoRef(String nome, String path) {
         this.nome = nome;
         this.path = path;
     }
-
 
     public String getNome() {
         return nome;
@@ -26,4 +31,15 @@ public class MuseoRef
     public void setPath(String path) {
         this.path = path;
     }
+
+    public void set (String nome, String path){
+            this.nome = nome;
+            this.path = path;
+    }
+    public boolean empty (){
+        if (TextUtils.isEmpty(this.path))
+            return true;
+        return false;
+    }
+
 }
