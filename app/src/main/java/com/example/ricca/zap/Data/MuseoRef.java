@@ -8,6 +8,7 @@ public class MuseoRef
 {
     private String nome;
     private String path;
+    private String cover;
 
     public MuseoRef (){}
 
@@ -15,6 +16,7 @@ public class MuseoRef
         this.nome = nome;
         this.path = path;
     }
+
 
     public String getNome() {
         return nome;
@@ -32,9 +34,18 @@ public class MuseoRef
         this.path = path;
     }
 
-    public void set (String nome, String path){
+    public String getCover() {
+        return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public void set (String nome, String path, String cover){
             this.nome = nome;
             this.path = path;
+            this.cover = cover;
     }
     public boolean empty (){
         if (TextUtils.isEmpty(this.path))

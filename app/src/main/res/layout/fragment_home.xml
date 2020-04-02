@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
-
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,29 +22,24 @@
         android:id="@+id/museumLogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="128dp"
         android:src="@drawable/logo"
-        app:layout_constraintTop_toBottomOf="@id/searchView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchView"
         tools:layout_editor_absoluteX="411dp" />
 
-    <TextView
-        android:id="@+id/textViewIntro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Inizia il tour"
-        android:textSize="24sp"
+    <View
+        android:id="@+id/line"
+        android:layout_width="0dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/cardMuseum"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/museumLogo" />
-
-    <Button
-        android:id="@+id/goto_museum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="seleziona museo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewIntro" />
 
     <ListView
         android:id="@+id/listMusem"
@@ -53,5 +47,15 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/searchView"
         tools:layout_editor_absoluteX="16dp" />
+
+    <include
+        android:id="@+id/cardMuseum"
+        layout="@layout/vista_opera"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/line" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

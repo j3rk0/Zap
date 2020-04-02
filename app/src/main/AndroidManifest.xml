@@ -20,8 +20,9 @@
         android:roundIcon="@drawable/logo_circle"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MuseumActivity"></activity>
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".MuseumActivity" />
+        <activity android:name=".HomeActivity"
+            android:windowSoftInputMode="adjustNothing"/>
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

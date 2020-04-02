@@ -9,7 +9,7 @@ public class ListaMusei {
 
     private ArrayList<MuseoRef> arrayList;
 
-    public ListaMusei(ArrayList<MuseoRef> arrayList) {
+    public ListaMusei (ArrayList<MuseoRef> arrayList) {
         this.arrayList = arrayList;
     }
 
@@ -21,11 +21,19 @@ public class ListaMusei {
         this.arrayList.add(museoRef);
     }
 
-    public MuseoRef find (String string, Context context){
+    public MuseoRef find (String string){
         for (MuseoRef ref : this.arrayList ){
             if (ref.getNome().equals(string))
                 return ref;
         }
         return null;
+    }
+
+    public int size (){
+        return arrayList.size();
+    }
+
+    public MuseoRef get (int i){
+        return arrayList.get(i);
     }
 }
