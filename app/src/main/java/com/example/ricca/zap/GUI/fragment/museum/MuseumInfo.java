@@ -25,7 +25,6 @@ public class MuseumInfo extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v= inflater.inflate(R.layout.fragment_museum_info, container, false);
-        return v;
+        return inflater.inflate(R.layout.fragment_museum_info, container, false);
     }
 }

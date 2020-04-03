@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Zap è la guida multimediale fatta semplice!"
+        android:text="Seleziona un museo dalla Homepage"
         android:textAlignment="center"
         android:textSize="22sp"
         app:autoSizeTextType="uniform"
@@ -29,5 +29,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_mona_lisa" />
+        app:srcCompat="@drawable/ic_museum" />
 </androidx.constraintlayout.widget.ConstraintLayout>

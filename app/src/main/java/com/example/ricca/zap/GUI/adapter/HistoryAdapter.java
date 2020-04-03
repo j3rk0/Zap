@@ -1,5 +1,6 @@
 package com.example.ricca.zap.GUI.adapter;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,6 +49,7 @@ public class HistoryAdapter extends BaseAdapter {
         return getItem(i).hashCode();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
 

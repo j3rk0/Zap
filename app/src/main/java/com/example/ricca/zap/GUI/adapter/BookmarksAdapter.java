@@ -49,7 +49,7 @@ public class BookmarksAdapter extends BaseAdapter {
         return getItem(position).hashCode();
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({"InflateParams", "SetTextI18n"})
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         if(view==null)

@@ -1,45 +1,30 @@
 package com.example.ricca.zap.GUI.fragment.home;
 
-import android.app.SearchManager;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-
-import android.text.Layout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
-import com.example.ricca.zap.ArtWorkActivity;
 import com.example.ricca.zap.Data.ListaMusei;
 import com.example.ricca.zap.Data.MuseoRef;
 import com.example.ricca.zap.GUI.adapter.MusemAdapter;
-import com.example.ricca.zap.HomeActivity;
 import com.example.ricca.zap.MuseumActivity;
 import com.example.ricca.zap.R;
 import com.google.firebase.database.DataSnapshot;
@@ -49,8 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
@@ -60,7 +44,16 @@ public class Home extends Fragment {
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("museums");
     private SearchView searchView;
     private ListaMusei listaMusei = new ListaMusei();
-    private ArrayList<String> listaNomi = new ArrayList<String>();
+    private ListView listView;
+    private ImageView imageView;
+    private View cardMuseum;
+    private View line;
+    private View continua;
+    private MusemAdapter musemAdapter;
+    private View underline;
+    private TextView mock_hint;
+
+
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -87,31 +80,43 @@ public class Home extends Fragment {
         startActivity(start);
     }
 
+    @SuppressLint("SetTextI18n")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View v= inflater.inflate(R.layout.fragment_home,container,false);
-        searchView = v.findViewById(R.id.searchView);
 
-        final ListView listView = v.findViewById(R.id.listMusem);
-        final ImageView imageView = v.findViewById(R.id.museumLogo);
-        final View line = v.findViewById(R.id.line);
-        final SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-        final View cardMuseum = v.findViewById(R.id.cardMuseum);
-        final CircularImageView cover = (CircularImageView)cardMuseum.findViewById(R.id.copertina);
-        final TextView textMuseum = cardMuseum.findViewById(R.id.nome);
-        final TextView descMuseum = cardMuseum.findViewById(R.id.desc);
-        final View buttonMuseum = cardMuseum.findViewById(R.id.remove_button);
-        descMuseum.setText("Continua il tour");
-        buttonMuseum.setVisibility(View.GONE);
 
-        setVisibilyListOff(listView, imageView, line, cardMuseum);
-        //searchView.setIconifiedByDefault(true);
-        searchView.setFocusable(false);
-        searchView.setIconified(false);
+        underline=v.findViewById(R.id.mock_underline);
+        mock_hint=v.findViewById(R.id.mock_hint);
+        searchView = v.findViewById(R.id.searchView);
+        listView = v.findViewById(R.id.listMusem);
+        imageView = v.findViewById(R.id.museumLogo);
+        line = v.findViewById(R.id.line);
+        cardMuseum = v.findViewById(R.id.cardMuseum);
+        continua=v.findViewById(R.id.continua_text);
+        final CircularImageView cover = cardMuseum.findViewById(R.id.copertina_museo);
+        final TextView textMuseum = cardMuseum.findViewById(R.id.museum_name);
+        final TextView descMuseum = cardMuseum.findViewById(R.id.museum_desc);
+
+
+        setVisibilyListOff();
         searchView.clearFocus();
+
+        /////////////////////////INIZIALIZZO LA CARD////////////////////////////////////
+
+        if(sharedPreferences.getString("key","0").equals("0"))
+        {
+            textMuseum.setText("Seleziona un museo");
+            descMuseum.setText("per incominciare la tua visita");
+            cover.setImageResource(R.drawable.ic_placeholder);
+            continua.setVisibility(View.GONE);
+        }else{
+            textMuseum.setText("Loading...");
+        }
 
         ////////////////////////LISTENER DATABASE///////////////////////////////////////
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -121,20 +126,21 @@ public class Home extends Fragment {
                  //////////////////DOWNLOAD MUSEI/////////////////////////////////////
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
                     museoRef = new MuseoRef();
-                    museoRef.set(ds.child("nome").getValue(String.class), ds.getRef().toString(), ds.child("cover").getValue(String.class));
+                    museoRef.set(ds.child("nome").getValue(String.class), ds.getRef().toString(), ds.child("cover").getValue(String.class),ds.child("descrizione").getValue(String.class));
                     listaMusei.add(museoRef);
-                    listaNomi.add(museoRef.getNome());
                 }
+                musemAdapter = new MusemAdapter(context, listaMusei);
 
-                final MusemAdapter musemAdapter = new MusemAdapter(context, listaMusei, listView);
 
                 if (!sharedPreferences.getString("key", "0").equals("0")) {
                     museoRef = listaMusei.find(sharedPreferences.getString("key", "0"));
-                    Glide.with(context).load(museoRef.getCover()).into((CircularImageView) cover);
+                    Glide.with(context).load(museoRef.getCover()).into(cover);
                     textMuseum.setText(museoRef.getNome());
+                    descMuseum.setText(museoRef.getDesc());
                 }
 
                listView.setAdapter(musemAdapter);
+
 
                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                    @Override
@@ -143,34 +149,47 @@ public class Home extends Fragment {
                        MuseoRef museoRef1 =  (listaMusei.find(value));
                        if (!TextUtils.isEmpty(museoRef1.getPath())) {
                            editor.putString("key", museoRef1.getNome());
-                           editor.commit();
-                           setVisibilyListOff(listView, imageView, line, cardMuseum);
+                           editor.apply();
+                           setVisibilyListOff();
                            Toast.makeText(context, sharedPreferences.getString("key", "0"), Toast.LENGTH_SHORT).show();
-                           Glide.with(context).load(museoRef1.getCover()).into((CircularImageView) cover);
+                           Glide.with(context).load(museoRef1.getCover()).into(cover);
                            textMuseum.setText(museoRef1.getNome());
+                           descMuseum.setText(museoRef1.getDesc());
 
                        }
                    }
                });
 
+
                searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                    @Override
                    public void onFocusChange(View v, boolean hasFocus) {
-                       setVisibilyListOn(listView, imageView, line, cardMuseum);
+                       setVisibilyListOn();
                    }
                });
+
+               mock_hint.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       setVisibilyListOn();
+                       searchView.onActionViewExpanded();
+                   }
+               });
+
                searchView.setOnSearchClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       setVisibilyListOn(listView, imageView, line, cardMuseum);
+                       setVisibilyListOn();
                    }
                });
                searchView.setOnClickListener(new View.OnClickListener() {
                    @Override
                    public void onClick(View v) {
-                       setVisibilyListOn(listView, imageView, line, cardMuseum);
+                       setVisibilyListOn();
                    }
                });
+
+
                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                    @Override
                    public boolean onQueryTextSubmit(String query) {
@@ -179,20 +198,12 @@ public class Home extends Fragment {
 
                    @Override
                    public boolean onQueryTextChange(String newText) {
-                       setVisibilyListOn(listView, imageView, line, cardMuseum);
+                       setVisibilyListOn();
                        musemAdapter.getFilter().filter(newText);
                        return false;
                    }
                });
 
-               searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-                   @Override
-                   public boolean onClose() {
-                       searchView.setIconified(false);
-                       setVisibilyListOff(listView, imageView, line, cardMuseum);
-                       return false;
-                   }
-               });
 
                cardMuseum.setOnClickListener(new View.OnClickListener() {
                    @Override
@@ -200,11 +211,8 @@ public class Home extends Fragment {
                        if (!sharedPreferences.getString("key", "0").equals("0"))
                        openMuseum(new MuseoRef("",sharedPreferences.getString("key", "0")));
                        else {
-                           searchView.requestFocus();
-                           setVisibilyListOn(listView, imageView, line, cardMuseum);
-                           ((InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE)).
-                                   toggleSoftInput(InputMethodManager.SHOW_FORCED,
-                                           InputMethodManager.HIDE_IMPLICIT_ONLY);
+                           setVisibilyListOn();
+                           searchView.onActionViewExpanded();
                        }
                    }
                });
@@ -215,19 +223,32 @@ public class Home extends Fragment {
         return v;
     }
 
-    final private void setVisibilyListOff (ListView listView, ImageView image, View textView, View card){
-        listView.setVisibility(View.GONE);
-        image.setVisibility(View.VISIBLE);
-        textView.setVisibility(View.VISIBLE);
-        card.setVisibility(View.VISIBLE);
+
+    public boolean isListOpen()
+    {
+        return listView.getVisibility()==View.VISIBLE;
     }
 
-    final private void setVisibilyListOn (ListView listView, ImageView image, View textView, View card){
-        listView.setVisibility(View.VISIBLE);
-        image.setVisibility(View.GONE);
-        textView.setVisibility(View.GONE);
-        card.setVisibility(View.GONE);
+    public void setVisibilyListOff (){
+        listView.setVisibility(View.GONE);
+        imageView.setVisibility(View.VISIBLE);
+        cardMuseum.setVisibility(View.VISIBLE);
+        line.setVisibility(View.VISIBLE);
+        continua.setVisibility(View.VISIBLE);
+        mock_hint.setVisibility(View.VISIBLE);
+        underline.setVisibility(View.VISIBLE);
+        searchView.setVisibility(View.INVISIBLE);
+    }
 
+    private void setVisibilyListOn (){
+        listView.setVisibility(View.VISIBLE);
+        imageView.setVisibility(View.GONE);
+        cardMuseum.setVisibility(View.GONE);
+        line.setVisibility(View.GONE);
+        continua.setVisibility(View.GONE);
+        mock_hint.setVisibility(View.GONE);
+        underline.setVisibility(View.GONE);
+        searchView.setVisibility(View.VISIBLE);
     }
 
 }

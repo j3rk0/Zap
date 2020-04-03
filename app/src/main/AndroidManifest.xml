@@ -22,7 +22,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MuseumActivity" />
         <activity android:name=".HomeActivity"
-            android:windowSoftInputMode="adjustNothing"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".SplashScreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

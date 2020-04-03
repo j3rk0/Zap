@@ -58,6 +58,7 @@ dependencies {
     implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
     implementation 'pl.bclogic:pulsator4droid:1.0.3'
     implementation 'com.google.firebase:firebase-ml-model-interpreter:22.0.1'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

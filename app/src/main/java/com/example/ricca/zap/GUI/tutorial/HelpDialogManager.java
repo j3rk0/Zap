@@ -38,7 +38,7 @@ public class HelpDialogManager {
         content.findViewById(R.id.button_next_help_dialog).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pager.getCurrentItem()<6)
+                if(pager.getCurrentItem()<=6)
                 pager.setCurrentItem(pager.getCurrentItem()+1);
             }
         });
@@ -67,15 +67,17 @@ class HelpPager extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case 0: return Pag1.newIstance();
+            case 0: return Pag0.newIstance();
 
-            case 1: return Pag2.newIstance();
+            case 1: return Pag1.newIstance();
 
-            case 2: return Pag3.newIstance();
+            case 2: return Pag2.newIstance();
 
-            case 3: return Pag4.newIstance();
+            case 3: return Pag3.newIstance();
 
-            case 4: return Pag5.newIstance();
+            case 4: return Pag4.newIstance();
+
+            case 5: return Pag5.newIstance();
 
             default:return Pag6.newIstance();
         }

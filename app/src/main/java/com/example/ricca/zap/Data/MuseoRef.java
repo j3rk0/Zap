@@ -9,6 +9,17 @@ public class MuseoRef
     private String nome;
     private String path;
     private String cover;
+    private String desc;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+
 
     public MuseoRef (){}
 
@@ -42,10 +53,11 @@ public class MuseoRef
         this.cover = cover;
     }
 
-    public void set (String nome, String path, String cover){
+    public void set (String nome, String path, String cover,String desc){
             this.nome = nome;
             this.path = path;
             this.cover = cover;
+            this.desc= desc;
     }
     public boolean empty (){
         if (TextUtils.isEmpty(this.path))

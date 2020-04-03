@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.ricca.zap.GUI.HomePager;
+import com.example.ricca.zap.GUI.fragment.home.Home;
 import com.example.ricca.zap.GUI.tutorial.HelpDialogManager;
 import com.example.ricca.zap.Services.ConnectionListener;
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
@@ -17,6 +18,7 @@ public class HomeActivity extends AppCompatActivity {
 
     FragmentPagerAdapter adapterViewPager;
     HelpDialogManager help;
+    private ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -33,7 +35,7 @@ public class HomeActivity extends AppCompatActivity {
 
         DotsIndicator indicator=findViewById(R.id.dots_indicator_home);
 
-        ViewPager vpPager = findViewById(R.id.pager);
+        vpPager = findViewById(R.id.pager);
         adapterViewPager = new HomePager(getSupportFragmentManager()); //setta il pager
         vpPager.setAdapter(adapterViewPager);
 
@@ -48,6 +50,19 @@ public class HomeActivity extends AppCompatActivity {
                 help.showHelpDialog();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        if(vpPager.getCurrentItem()==1) {
+            Home pageHome=((Home)getSupportFragmentManager().getFragments().get(0));
+
+            if(pageHome.isListOpen())
+                pageHome.setVisibilyListOff();
+
+        }else super.onBackPressed();
+
     }
 
 }
