@@ -148,6 +148,7 @@ public class TFLiteInterpreter
 
         } catch (FirebaseMLException e) {Log.e(TAG, Objects.requireNonNull(e.getMessage()));}
 
+        if(interpreter!=null && model_options!=null)
         interpreter.run(Objects.requireNonNull(inputs), model_options)
                 .addOnSuccessListener(
                         new OnSuccessListener<FirebaseModelOutputs>()
@@ -177,7 +178,10 @@ public class TFLiteInterpreter
 
             List<InferenceResult> inferenceResult =new ArrayList<>();
             int i=0;
+            if(interpreter!=null)
             try {
+               // Log.v(TAG,"get length");
+                //Log.v(TAG,"length: "+probabilities.length);
                 for (float probability : probabilities) {
 
                     //per ogni elemento dell'output aggiunge un risultato alla lista

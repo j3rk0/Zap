@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +42,12 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 public class Home extends Fragment {
 
     private Context context;
+
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference().child("museums");
-    private SearchView searchView;
+
     private ListaMusei listaMusei = new ListaMusei();
+
+    private SearchView searchView;
     private ListView listView;
     private ImageView imageView;
     private View cardMuseum;
@@ -73,10 +77,10 @@ public class Home extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    private void openMuseum(MuseoRef ref)
+    private void openMuseum(String ref)
     {
         Intent start=new Intent(context, MuseumActivity.class);
-        start.putExtra(EXTRA_MESSAGE,ref.getPath());
+        start.putExtra(EXTRA_MESSAGE,ref);
         startActivity(start);
     }
 
@@ -87,9 +91,11 @@ public class Home extends Fragment {
         super.onCreate(savedInstanceState);
         View v= inflater.inflate(R.layout.fragment_home,container,false);
 
+        //shared preferences
         final SharedPreferences sharedPreferences = Objects.requireNonNull(getActivity()).getPreferences(Context.MODE_PRIVATE);
         final SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        //binding interfaccia
         underline=v.findViewById(R.id.mock_underline);
         mock_hint=v.findViewById(R.id.mock_hint);
         searchView = v.findViewById(R.id.searchView);
@@ -103,17 +109,16 @@ public class Home extends Fragment {
         final TextView descMuseum = cardMuseum.findViewById(R.id.museum_desc);
 
 
-        setVisibilyListOff();
-        searchView.clearFocus();
-
         /////////////////////////INIZIALIZZO LA CARD////////////////////////////////////
 
         if(sharedPreferences.getString("key","0").equals("0"))
-        {
+        {//se è la prima volta che si apre l'app
+
             textMuseum.setText("Seleziona un museo");
             descMuseum.setText("per incominciare la tua visita");
             cover.setImageResource(R.drawable.ic_placeholder);
             continua.setVisibility(View.GONE);
+
         }else{
             textMuseum.setText("Loading...");
         }
@@ -125,14 +130,18 @@ public class Home extends Fragment {
                  MuseoRef museoRef;
                  //////////////////DOWNLOAD MUSEI/////////////////////////////////////
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    Log.v("DATA",ds.getKey());
                     museoRef = new MuseoRef();
-                    museoRef.set(ds.child("nome").getValue(String.class), ds.getRef().toString(), ds.child("cover").getValue(String.class),ds.child("descrizione").getValue(String.class));
+                    museoRef.set(ds.child("nome").getValue(String.class), "/museums/"+ds.getKey() , ds.child("cover").getValue(String.class),ds.child("descrizione").getValue(String.class));
                     listaMusei.add(museoRef);
+
+
                 }
                 musemAdapter = new MusemAdapter(context, listaMusei);
 
 
                 if (!sharedPreferences.getString("key", "0").equals("0")) {
+
                     museoRef = listaMusei.find(sharedPreferences.getString("key", "0"));
                     Glide.with(context).load(museoRef.getCover()).into(cover);
                     textMuseum.setText(museoRef.getNome());
@@ -145,17 +154,21 @@ public class Home extends Fragment {
                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                    @Override
                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                       String value =  ((MuseoRef) parent.getItemAtPosition(position)).getNome();
+                       String value =  ((MuseoRef) parent.getItemAtPosition(position)).getPath();
                        MuseoRef museoRef1 =  (listaMusei.find(value));
                        if (!TextUtils.isEmpty(museoRef1.getPath())) {
-                           editor.putString("key", museoRef1.getNome());
+
+                           editor.putString("key", museoRef1.getPath());
                            editor.apply();
-                           setVisibilyListOff();
-                           Toast.makeText(context, sharedPreferences.getString("key", "0"), Toast.LENGTH_SHORT).show();
+
+
+                           museoRef1 = listaMusei.find(sharedPreferences.getString("key", "0"));
                            Glide.with(context).load(museoRef1.getCover()).into(cover);
                            textMuseum.setText(museoRef1.getNome());
                            descMuseum.setText(museoRef1.getDesc());
 
+
+                           openMuseum(museoRef1.getPath());
                        }
                    }
                });
@@ -209,7 +222,7 @@ public class Home extends Fragment {
                    @Override
                    public void onClick(View v) {
                        if (!sharedPreferences.getString("key", "0").equals("0"))
-                       openMuseum(new MuseoRef("",sharedPreferences.getString("key", "0")));
+                       openMuseum(sharedPreferences.getString("key", "0"));
                        else {
                            setVisibilyListOn();
                            searchView.onActionViewExpanded();
@@ -223,13 +236,20 @@ public class Home extends Fragment {
         return v;
     }
 
+    @Override
+    public void onResume() { //qundo la home riprende ci assicuriamo di nascondere la lista
+        super.onResume();
+        setVisibilyListOff();
 
-    public boolean isListOpen()
+    }
+
+
+    public boolean isListOpen() //la lista dei musei è aperta?
     {
         return listView.getVisibility()==View.VISIBLE;
     }
 
-    public void setVisibilyListOff (){
+    public void setVisibilyListOff (){  //nasconde la lista dei musei
         listView.setVisibility(View.GONE);
         imageView.setVisibility(View.VISIBLE);
         cardMuseum.setVisibility(View.VISIBLE);
@@ -240,7 +260,7 @@ public class Home extends Fragment {
         searchView.setVisibility(View.INVISIBLE);
     }
 
-    private void setVisibilyListOn (){
+    private void setVisibilyListOn (){  //mostra la lista dei musei
         listView.setVisibility(View.VISIBLE);
         imageView.setVisibility(View.GONE);
         cardMuseum.setVisibility(View.GONE);

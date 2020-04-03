@@ -23,7 +23,7 @@ public class ListaMusei {
 
     public MuseoRef find (String string){
         for (MuseoRef ref : this.arrayList ){
-            if (ref.getNome().equals(string))
+            if (ref.getPath().equals(string))
                 return ref;
         }
         return null;

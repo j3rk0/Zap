@@ -23,6 +23,8 @@ import androidx.renderscript.RenderScript;
 import com.bumptech.glide.Glide;
 import com.example.ricca.zap.ArtWorkActivity;
 import com.example.ricca.zap.Data.InferenceResult;
+import com.example.ricca.zap.Data.MuseumMetaData;
+import com.example.ricca.zap.Data.MuseumMetaDataWaiter;
 import com.example.ricca.zap.R;
 import com.example.ricca.zap.Services.TFLiteInterpreter;
 import com.google.firebase.FirebaseApp;
@@ -53,7 +55,7 @@ import pl.bclogic.pulsator4droid.library.PulsatorLayout;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
-public class Camera extends Fragment {
+public class Camera extends Fragment implements MuseumMetaDataWaiter {
 
     private Fotoapparat fotoapparat;
     private Context context;
@@ -203,7 +205,7 @@ public class Camera extends Fragment {
 
         //creazione classificatore
         final RenderScript rs=RenderScript.create(context);
-        classifier= new TFLiteInterpreter("music_museum","museums/music_museum/labels");
+
 
 
 
@@ -241,19 +243,21 @@ public class Camera extends Fragment {
                     @Override
                     public void process(@NotNull Frame frame)
                     {
-                        if(isActive && !isFounded && ds!=null) {//se non è già stato trovato un possibile risultato
+                        if(isActive && !isFounded && ds!=null && classifier!=null) {//se non è già stato trovato un possibile risultato
                             //analizzo il frame
                             classifier.runInference(Nv21Image.nv21ToBitmap(rs, frame.getImage(), frame.getSize().width, frame.getSize().height));
                             inferenceResults = classifier.getResult();
 
+                            if(inferenceResults!=null && inferenceResults.size()>0)
+                                Log.v("RESULT",inferenceResults.get(0).getTitle()+" "+inferenceResults.get(0).getConfidence());
                             if( //se il risultato:
                                     inferenceResults !=null && //non è null
                                     inferenceResults.size()>0 && // ha almeno una voce
-                                    inferenceResults.get(0).getConfidence()>0.95 && // la precisione è sopra il 95%
                                     ds.hasChild(Objects.requireNonNull(inferenceResults.get(0).getTitle())) && //esiste nel db
-                                    !inferenceResults.get(0).getTitle().equals("noise")
+                                    !inferenceResults.get(0).getTitle().equals("noise") &&
+                                    inferenceResults.get(0).getConfidence() >= 0.95
                             )
-                            showDialog(inferenceResults.get(0).getTitle());//mostra il dialog
+                                showDialog(inferenceResults.get(0).getTitle());//mostra il dialog
 
                         }
                     }
@@ -290,5 +294,11 @@ public class Camera extends Fragment {
     }
 
 
+    //acquire metadata
+    @Override
+    public void init(MuseumMetaData metaData) {
+        classifier= new TFLiteInterpreter(metaData.getNomeModello(),metaData.getLabels());
+
+    }
 }
 
