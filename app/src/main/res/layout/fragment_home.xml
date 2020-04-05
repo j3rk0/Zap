@@ -27,11 +27,13 @@
         android:id="@+id/museumLogo"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="168dp"
+        android:layout_marginBottom="151dp"
         android:src="@drawable/logo"
-        app:layout_constraintBottom_toTopOf="@+id/line"
+        app:layout_constraintBottom_toTopOf="@+id/cardMuseum"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/listMusem" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <View
         android:id="@+id/line"

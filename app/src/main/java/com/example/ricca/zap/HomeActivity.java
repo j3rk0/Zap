@@ -41,9 +41,9 @@ public class HomeActivity extends AppCompatActivity {
 
 
         indicator.setViewPager( vpPager);
-        vpPager.setCurrentItem(1);
+        vpPager.setCurrentItem(1);  //si parte dalla home
 
-        help=new HelpDialogManager(this);
+        help=new HelpDialogManager(this);  //inizializziamo il tutorial
         findViewById(R.id.help_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,15 +53,17 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed()
+    public void onBackPressed() //quando viene premuto indietro
     {
-        if(vpPager.getCurrentItem()==1) {
+
+        if(vpPager.getCurrentItem()==1) //se ci troviamo nella home
+        {
             Home pageHome=((Home)getSupportFragmentManager().getFragments().get(0));
 
-            if(pageHome.isListOpen())
-                pageHome.setVisibilyListOff();
+            if(pageHome.isListOpen())  //e la lista dei musei è aperta
+                pageHome.setVisibilyListOff(); //chiudi la lista
 
-        }else super.onBackPressed();
+        }else super.onBackPressed(); //altrimenti vai indietro normalmente
 
     }
 

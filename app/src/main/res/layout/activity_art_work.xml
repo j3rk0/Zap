@@ -49,7 +49,7 @@
             app:layout_constraintEnd_toStartOf="@+id/share_artwork"
             app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_bookmark_border_white_36dp" />
+            app:srcCompat="@drawable/ic_star_border" />
 
         <ImageButton
             android:id="@+id/share_artwork"

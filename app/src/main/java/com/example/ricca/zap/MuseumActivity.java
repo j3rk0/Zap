@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.example.ricca.zap.Data.MuseumMetaData;
@@ -60,11 +61,10 @@ public class MuseumActivity extends AppCompatActivity implements MuseumMetaDataW
     @Override
     public void init(MuseumMetaData metaData)
     {
-        //propagate metadata to fragments
+
         for(Fragment i: getSupportFragmentManager().getFragments())
         {
             ((MuseumMetaDataWaiter)i).init(metaData);
         }
     }
-
 }

@@ -67,6 +67,7 @@ public class Camera extends Fragment implements MuseumMetaDataWaiter {
     private boolean isActive=false;
     private DataSnapshot ds=null;
     private View to_hide=null;
+    private View v=null;
 
     public static Camera newInstance() {
         Camera fragment = new Camera();
@@ -181,7 +182,7 @@ public class Camera extends Fragment implements MuseumMetaDataWaiter {
                              @Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View v = inflater.inflate(R.layout.fragment_camera, container, false);
+        v = inflater.inflate(R.layout.fragment_camera, container, false);
 
         //fa partire l'animazione
         ((PulsatorLayout)v.findViewById(R.id.pulsator)).start();
@@ -297,7 +298,12 @@ public class Camera extends Fragment implements MuseumMetaDataWaiter {
     //acquire metadata
     @Override
     public void init(MuseumMetaData metaData) {
+
+        Log.v("MUSEUM METADATA","INIT CAMERA");
         classifier= new TFLiteInterpreter(metaData.getNomeModello(),metaData.getLabels());
+
+        Glide.with(context).load(metaData.getCopertina()).into((CircularImageView)v.findViewById(R.id.copertina_museo_camera));
+        ((TextView)v.findViewById(R.id.nome_museo_camera)).setText(metaData.getNome());
 
     }
 }

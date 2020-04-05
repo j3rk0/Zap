@@ -1,5 +1,7 @@
 package com.example.ricca.zap.Data;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +16,7 @@ public class MuseumMetaData {
     private String labels;
     private String nomeModello;
     private String mappa;
+    private String copertina;
 
 
     private MuseumMetaData metaData =this;
@@ -30,6 +33,8 @@ public class MuseumMetaData {
                 mappa=dataSnapshot.child("mappa").getValue(String.class);
                 labels=path+"/labels";
                 nomeModello=dataSnapshot.child("modello").getValue(String.class);
+                copertina=dataSnapshot.child("cover").getValue(String.class);
+                Log.v("MUSEUM METADATA","download completed");
                 waiter.init(metaData);
             }
 
@@ -39,6 +44,8 @@ public class MuseumMetaData {
             }
         });
     }
+
+    public String getCopertina() {return copertina;}
 
     public String getNome() {
         return nome;

@@ -332,8 +332,8 @@ public class ArtWorkActivity extends AppCompatActivity
                     }
                 }
                 //setta stato bottone preferiti
-                if(preferiti.isPresent(opera)) bookmark.setImageResource(R.drawable.ic_bookmark_white_36dp);
-                else bookmark.setImageResource(R.drawable.ic_bookmark_border_white_36dp);
+                if(preferiti.isPresent(opera)) bookmark.setImageResource(R.drawable.ic_star_white);
+                else bookmark.setImageResource(R.drawable.ic_star_border);
             }
         }).start();
 
@@ -346,12 +346,12 @@ public class ArtWorkActivity extends AppCompatActivity
 
                 if(preferiti.isPresent(opera)) {
                     preferiti.remove(opera);
-                    bookmark.setImageResource(R.drawable.ic_bookmark_border_white_36dp);
+                    bookmark.setImageResource(R.drawable.ic_star_border);
                 }
                 else
                 {
                     preferiti.add(nome,opera,link_miniatura);
-                    bookmark.setImageResource(R.drawable.ic_bookmark_white_36dp);
+                    bookmark.setImageResource(R.drawable.ic_star_white);
                 }
             }
         });

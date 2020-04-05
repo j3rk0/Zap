@@ -3,6 +3,7 @@ package com.example.ricca.zap.GUI.fragment.museum;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,7 @@ public class MuseumInfo extends Fragment implements MuseumMetaDataWaiter {
     @Override
     public void init(final MuseumMetaData metaData)
     {
-
+        Log.v("MUSEUM METADATA","INIT INFO");
         //load map
       new Thread()
       {
@@ -80,6 +81,7 @@ public class MuseumInfo extends Fragment implements MuseumMetaDataWaiter {
           }
       }.start();
 
-        ((TextView)v.findViewById(R.id.museum_name)).setText(metaData.getNome());
+        ((TextView)v.findViewById(R.id.museum_desc_info)).setText(metaData.getDescrizione());
+
     }
 }

@@ -60,14 +60,16 @@
 
             <TextView
                 android:id="@+id/desc"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="4dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto"
                 app:autoSizeTextType="uniform"
                 app:layout_constraintBottom_toBottomOf="@+id/copertina"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/nome"
                 app:layout_constraintTop_toBottomOf="@+id/nome" />
 
@@ -77,6 +79,7 @@
                 android:layout_height="34dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/ic_delete_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/nome"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/nome" />
 

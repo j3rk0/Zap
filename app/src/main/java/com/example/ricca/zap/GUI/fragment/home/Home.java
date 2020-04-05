@@ -6,16 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -121,52 +118,56 @@ public class Home extends Fragment {
 
         }else{
             textMuseum.setText("Loading...");
+            cardMuseum.setOnClickListener(new View.OnClickListener() {  //se è la prima volta che apri l'app
+                @Override
+                public void onClick(View v) {  //onclick
+                    setVisibilyListOn();
+                    searchView.onActionViewExpanded(); //apri la lista
+                }
+            });
         }
 
         ////////////////////////LISTENER DATABASE///////////////////////////////////////
-        mDatabase.addValueEventListener(new ValueEventListener() {
+        mDatabase.addValueEventListener(new ValueEventListener()
+        {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
                  MuseoRef museoRef;
                  //////////////////DOWNLOAD MUSEI/////////////////////////////////////
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    Log.v("DATA",ds.getKey());
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
                     museoRef = new MuseoRef();
-                    museoRef.set(ds.child("nome").getValue(String.class), "/museums/"+ds.getKey() , ds.child("cover").getValue(String.class),ds.child("descrizione").getValue(String.class));
+                    museoRef.set(
+                            ds.child("nome").getValue(String.class),
+                            "/museums/"+ds.getKey(),
+                            ds.child("cover").getValue(String.class),
+                            ds.child("descrizione").getValue(String.class));
+
                     listaMusei.add(museoRef);
-
-
                 }
                 musemAdapter = new MusemAdapter(context, listaMusei);
 
 
-                if (!sharedPreferences.getString("key", "0").equals("0")) {
-
-                    museoRef = listaMusei.find(sharedPreferences.getString("key", "0"));
-                    Glide.with(context).load(museoRef.getCover()).into(cover);
-                    textMuseum.setText(museoRef.getNome());
-                    descMuseum.setText(museoRef.getDesc());
-                }
-
+               /////////////////////////ELEMENTI LISTA////////////////////////////////////
                listView.setAdapter(musemAdapter);
 
-
-               listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+               listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+               {
                    @Override
-                   public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   public void onItemClick(AdapterView<?> parent, View view, int position, long id)
+                   {
                        String value =  ((MuseoRef) parent.getItemAtPosition(position)).getPath();
                        MuseoRef museoRef1 =  (listaMusei.find(value));
-                       if (!TextUtils.isEmpty(museoRef1.getPath())) {
-
+                       if (!TextUtils.isEmpty(museoRef1.getPath()))
+                       {
                            editor.putString("key", museoRef1.getPath());
                            editor.apply();
-
 
                            museoRef1 = listaMusei.find(sharedPreferences.getString("key", "0"));
                            Glide.with(context).load(museoRef1.getCover()).into(cover);
                            textMuseum.setText(museoRef1.getNome());
                            descMuseum.setText(museoRef1.getDesc());
-
 
                            openMuseum(museoRef1.getPath());
                        }
@@ -174,36 +175,8 @@ public class Home extends Fragment {
                });
 
 
-               searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-                   @Override
-                   public void onFocusChange(View v, boolean hasFocus) {
-                       setVisibilyListOn();
-                   }
-               });
-
-               mock_hint.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       setVisibilyListOn();
-                       searchView.onActionViewExpanded();
-                   }
-               });
-
-               searchView.setOnSearchClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       setVisibilyListOn();
-                   }
-               });
-               searchView.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       setVisibilyListOn();
-                   }
-               });
-
-
-               searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+               searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener()
+               {
                    @Override
                    public boolean onQueryTextSubmit(String query) {
                        return false;
@@ -217,32 +190,70 @@ public class Home extends Fragment {
                    }
                });
 
+                ///////////////////////CARD CONTINUA VISITA////////////////////////////////////////
+                if (!sharedPreferences.getString("key", "0").equals("0")) //se non è la prima volta che si apre l'app
+                {
 
-               cardMuseum.setOnClickListener(new View.OnClickListener() {
-                   @Override
-                   public void onClick(View v) {
-                       if (!sharedPreferences.getString("key", "0").equals("0"))
-                       openMuseum(sharedPreferences.getString("key", "0"));
-                       else {
-                           setVisibilyListOn();
-                           searchView.onActionViewExpanded();
-                       }
-                   }
-               });
+                    museoRef = listaMusei.find(sharedPreferences.getString("key", "0")); //riempi card
+                    Glide.with(context).load(museoRef.getCover()).into(cover);
+                    textMuseum.setText(museoRef.getNome());
+                    descMuseum.setText(museoRef.getDesc());
+                    cardMuseum.setOnClickListener(new View.OnClickListener()
+                    {
+                        @Override
+                        public void onClick(View v)
+                        {
+                            //non so perchè ma se si toglie questa istruzione se si continua la visita all'avvio dell'app non si carica il museo
+                            listView.setVisibility(View.INVISIBLE);
+
+                            openMuseum(sharedPreferences.getString("key","0")); //onclick apri l'ultimo museo
+                        }
+                    });
+
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {}
         });
+
+        ////////////////////////////BARRA DI RICERCA/////////////////////////
+        searchView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                setVisibilyListOn();
+            }
+        });
+
+        mock_hint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setVisibilyListOn();
+                searchView.onActionViewExpanded();
+            }
+        });
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setVisibilyListOn();
+            }
+        });
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setVisibilyListOn();
+            }
+        });
+
         return v;
     }
+
 
     @Override
     public void onResume() { //qundo la home riprende ci assicuriamo di nascondere la lista
         super.onResume();
         setVisibilyListOff();
-
     }
-
 
     public boolean isListOpen() //la lista dei musei è aperta?
     {
