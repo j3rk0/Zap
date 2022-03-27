@@ -3,8 +3,7 @@ Zapp is a Android App that use tensorflow image recognition CNN to create intera
 
 Thanks to firebase, Museums Managers can upload theirs guided tour on zap!
 
-![Screenshot_20220327-175347_Zap](https://user-images.githubusercontent.com/42966046/160290150-20ec4f4d-4362-44a8-a058-eaf5db1de242.png)
-
+<img src="https://user-images.githubusercontent.com/42966046/160290150-20ec4f4d-4362-44a8-a058-eaf5db1de242.png" width=30% height=30%>
 
 all you need is some photos of the artworks, the content you want to share ( text, photos, music, videos) and the map of the tour.
 
