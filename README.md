@@ -1,4 +1,5 @@
-# Zap
+# Zap! [logo](https://user-images.githubusercontent.com/42966046/160291012-cc89f3bd-e206-47e6-a504-fab2d988ef13.png)
+
 Zapp is a Android App that use tensorflow image recognition CNN to create interactive guided tour and share cultural content.
 
 Thanks to firebase, Museums Managers can upload theirs guided tour on zap!
